@@ -77,8 +77,6 @@ func CreateToolhelp32Snapshot(dwFlags uintptr, th32ProcessID uint32) HANDLE {
 	return HANDLE(ret)
 }
 
-//ret != 0 is a bool itself returning true or false
-
 // https://msdn.microsoft.com/097790e8-30c2-4b00-9256-fa26e2ceb893
 func Process32First(hSnapshot HANDLE, pe *PROCESSENTRY32) bool {
 	ret, _, _ := procProcess32First.Call(
