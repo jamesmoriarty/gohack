@@ -48,7 +48,7 @@ func GetModule(module string, PID uint32) (MODULEENTRY32, bool, unsafe.Pointer) 
 	} else {
 		for i := true; i; i = Module32Next(snap, &me32) {
 			parsed = parseint8(me32.SzModule[:])
-			
+
 			if parsed == module {
 				return me32, true, unsafe.Pointer(me32.ModBaseAddr)
 			}

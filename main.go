@@ -9,21 +9,21 @@ import (
 
 func main() {
 	var (
-		processName            = "csgo.exe"
-		moduleName             = "client_panorama.dll"
+		processName = "csgo.exe"
+		moduleName  = "client_panorama.dll"
 		// Flags
-		flagsJump              = uintptr(0x6)
+		flagsJump = uintptr(0x6)
 		// https://docs.microsoft.com/en-gb/windows/win32/inputdev/virtual-key-codes
-		vk_space               = 0x20
+		vk_space = 0x20
 		// https://github.com/frk1/hazedumper/blob/master/csgo.cs
 		offsetLocalPlayerFlags = uintptr(0x104)
 		offsetLocalPlayer      = uintptr(0xCFAA3C)
 		offsetForceJump        = uintptr(0x51B0758)
 		// Dynamic adresses
-		addressLocalPlayer       uintptr
-		addressForceJump         uintptr
-		addressLocalPlayerFlags  uintptr
-		addressBase              uintptr
+		addressBase             uintptr
+		addressForceJump        uintptr
+		addressLocalPlayer      uintptr
+		addressLocalPlayerFlags uintptr
 	)
 
 	pid, success := win32.GetProcessID(processName)
@@ -38,9 +38,9 @@ func main() {
 	fmt.Printf("Info: addressForceJump %v\n", addressForceJump)
 	win32.ReadProcessMemory(process, win32.LPCVOID(addressBase+offsetLocalPlayer), &addressLocalPlayer, 4)
 	fmt.Printf("Info: addressLocalPlayer %v\n", addressLocalPlayer)
-	addressLocalPlayerFlags = addressLocalPlayer+offsetLocalPlayerFlags
+	addressLocalPlayerFlags = addressLocalPlayer + offsetLocalPlayerFlags
 	fmt.Printf("Info: addressLocalPlayerFlags %v\n", addressLocalPlayerFlags)
-	
+
 	var flagsCurrent uintptr
 
 	for {
