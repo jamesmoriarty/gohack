@@ -1,0 +1,16 @@
+os: windows
+language: go
+stages:
+  - Build
+
+jobs:
+  include:
+    - stage: Build
+      script: go.exe build -v
+      deploy:
+        provider: releases
+        api_key: $GITHUB_OAUTH_TOKEN
+        file: "gohack.exe"
+        skip_cleanup: true
+        on:
+          tags: true
