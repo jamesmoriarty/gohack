@@ -11,14 +11,14 @@ func main() {
 	var (
 		processName = "csgo.exe"
 		moduleName  = "client_panorama.dll"
-		// Flags
-		flagsJump = uintptr(0x6)
 		// https://docs.microsoft.com/en-gb/windows/win32/inputdev/virtual-key-codes
-		vk_space = 0x20
+		VKSPACE = 0x20
 		// https://github.com/frk1/hazedumper/blob/master/csgo.cs
 		offsetLocalPlayerFlags = uintptr(0x104)
 		offsetLocalPlayer      = uintptr(0xCFAA3C)
 		offsetForceJump        = uintptr(0x51B0758)
+		// Flags
+		flagsJump = uintptr(0x6)
 		// Dynamic adresses
 		addressBase             uintptr
 		addressForceJump        uintptr
@@ -44,7 +44,7 @@ func main() {
 	var flagsCurrent uintptr
 
 	for {
-		if win32.GetAsyncKeyState(vk_space) > 0 {
+		if win32.GetAsyncKeyState(VKSPACE) > 0 {
 			win32.ReadProcessMemory(process, win32.LPCVOID(addressLocalPlayerFlags), &flagsCurrent, 1)
 
 			if flagsCurrent != 0 {
