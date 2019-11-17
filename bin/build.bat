@@ -10,4 +10,4 @@ echo Exit Code is %errorlevel%
 
 for /f %%a in ('powershell -Command "git rev-parse --short HEAD"') do set VERSION=%%a
 for /f %%a in ('powershell -Command "Get-Date -format yyyyMMdd.HHmmss"') do set DATE=%%a
-go.exe build -v -ldflags "-X main.version=%VERSION% -X main.date=%DATE%"
+go.exe build -v -ldflags "-X github.com/jamesmoriarty/gohack/config.Version=%VERSION% -X github.com/jamesmoriarty/gohack/config.Date=%DATE%"
