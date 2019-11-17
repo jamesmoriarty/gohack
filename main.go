@@ -3,11 +3,42 @@ package main
 import (
 	"fmt"
 	win32 "github.com/jamesmoriarty/gohack/win32"
+	log "github.com/sirupsen/logrus"
+	"os"
+	"strconv"
 	"time"
 	"unsafe"
 )
 
+var (
+	version string
+	date    string
+	banner  = `
+    ___       ___       ___       ___       ___       ___   
+   /\  \     /\  \     /\__\     /\  \     /\  \     /\__\  
+  /::\  \   /::\  \   /:/__/_   /::\  \   /::\  \   /:/ _/_ 
+ /:/\:\__\ /:/\:\__\ /::\/\__\ /::\:\__\ /:/\:\__\ /::-"\__\
+ \:\:\/__/ \:\/:/  / \/\::/  / \/\::/  / \:\ \/__/ \;:;-",-"
+  \::/  /   \::/  /    /:/  /    /:/  /   \:\__\    |:|  |  
+   \/__/     \/__/     \/__/     \/__/     \/__/     \|__| 
+ 
+version: %s-%s
+`
+)
+
+func convertPtrToHex(ptr uintptr) string {
+	s := fmt.Sprintf("%d", ptr)
+	n, _ := strconv.Atoi(s)
+	h := fmt.Sprintf("0x%x", n)
+	return h
+}
+
 func main() {
+	fmt.Printf(banner, version, date)
+	fmt.Println()
+
+	log.SetFormatter(&log.TextFormatter{ForceColors: true})
+
 	var (
 		// Constants
 		PROCESSNAME = "csgo.exe"
@@ -20,35 +51,49 @@ func main() {
 		offsetLocalPlayer      = uintptr(0xCFAA3C)
 		offsetForceJump        = uintptr(0x51B0758)
 		// Dynamic adresses
-		addressBase             uintptr
-		addressForceJump        uintptr
+		addressLocal            uintptr
+		addressLocalForceJump   uintptr
 		addressLocalPlayer      uintptr
 		addressLocalPlayerFlags uintptr
 	)
 
 	pid, success := win32.GetProcessID(PROCESSNAME)
-	fmt.Println("Info: GetProcessID", success, pid)
-	module, success, address := win32.GetModule(MODULENAME, pid)
-	fmt.Println("Info: GetModule", module.ModBaseSize, success, address)
-	process, err := win32.OpenProcess(win32.PROCESS_ALL_ACCESS, false, pid)
-	fmt.Println("Info: OpenProcess", process, err)
-	addressBase = uintptr(unsafe.Pointer(address))
-	fmt.Printf("Info: addressBase %v\n", addressBase)
-	addressForceJump = addressBase + offsetForceJump
-	fmt.Printf("Info: addressForceJump %v\n", addressForceJump)
-	win32.ReadProcessMemory(process, win32.LPCVOID(addressBase+offsetLocalPlayer), &addressLocalPlayer, 4)
-	fmt.Printf("Info: addressLocalPlayer %v\n", addressLocalPlayer)
+	log.WithFields(log.Fields{"pid": pid}).Info("GetProcessID ", PROCESSNAME)
+	if !success {
+		log.Fatal("Failed to get pid ", PROCESSNAME)
+		os.Exit(1)
+	}
+
+	_, success, address := win32.GetModule(MODULENAME, pid)
+	log.WithFields(log.Fields{"address": address}).Info("GetModule ", MODULENAME)
+	if !success {
+		log.Fatal("Failed to get module address ", MODULENAME)
+		os.Exit(1)
+	}
+
+	processHandle, _ := win32.OpenProcess(win32.PROCESS_ALL_ACCESS, false, pid)
+	log.WithFields(log.Fields{"processHandle": processHandle}).Info("OpenProcess ", pid)
+
+	addressLocal = uintptr(unsafe.Pointer(address))
+	log.WithFields(log.Fields{"value": convertPtrToHex(addressLocal)}).Info("- addressLocal")
+
+	addressLocalForceJump = addressLocal + offsetForceJump
+	log.WithFields(log.Fields{"value": convertPtrToHex(addressLocalForceJump)}).Info("- addressLocalForceJump")
+
+	win32.ReadProcessMemory(processHandle, win32.LPCVOID(addressLocal+offsetLocalPlayer), &addressLocalPlayer, 4)
+	log.WithFields(log.Fields{"value": convertPtrToHex(addressLocalPlayer)}).Info("- addressLocalPlayer")
+
 	addressLocalPlayerFlags = addressLocalPlayer + offsetLocalPlayerFlags
-	fmt.Printf("Info: addressLocalPlayerFlags %v\n", addressLocalPlayerFlags)
+	log.WithFields(log.Fields{"value": convertPtrToHex(addressLocalPlayerFlags)}).Info("- addressLocalPlayerFlags")
 
 	var flagsCurrent uintptr
 
 	for {
 		if win32.GetAsyncKeyState(VKSPACE) > 0 {
-			win32.ReadProcessMemory(process, win32.LPCVOID(addressLocalPlayerFlags), &flagsCurrent, 1)
+			win32.ReadProcessMemory(processHandle, win32.LPCVOID(addressLocalPlayerFlags), &flagsCurrent, 1)
 
 			if flagsCurrent != 0 {
-				win32.WriteProcessMemory(process, addressForceJump, unsafe.Pointer(&playerFlagsJump), 1)
+				win32.WriteProcessMemory(processHandle, addressLocalForceJump, unsafe.Pointer(&playerFlagsJump), 1)
 			}
 		}
 		time.Sleep(5)
