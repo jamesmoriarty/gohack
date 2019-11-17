@@ -10,6 +10,22 @@ import (
 	"unsafe"
 )
 
+var (
+	version string
+	date    string
+	banner  = `
+    ___       ___       ___       ___       ___       ___   
+   /\  \     /\  \     /\__\     /\  \     /\  \     /\__\  
+  /::\  \   /::\  \   /:/__/_   /::\  \   /::\  \   /:/ _/_ 
+ /:/\:\__\ /:/\:\__\ /::\/\__\ /::\:\__\ /:/\:\__\ /::-"\__\
+ \:\:\/__/ \:\/:/  / \/\::/  / \/\::/  / \:\ \/__/ \;:;-",-"
+  \::/  /   \::/  /    /:/  /    /:/  /   \:\__\    |:|  |  
+   \/__/     \/__/     \/__/     \/__/     \/__/     \|__| 
+ 
+version: %s-%s
+`
+)
+
 func convertPtrToHex(ptr uintptr) string {
 	s := fmt.Sprintf("%d", ptr)
 	n, _ := strconv.Atoi(s)
@@ -18,6 +34,9 @@ func convertPtrToHex(ptr uintptr) string {
 }
 
 func main() {
+	fmt.Printf(banner, version, date)
+	fmt.Println()
+
 	log.SetFormatter(&log.TextFormatter{ForceColors: true})
 
 	var (
@@ -41,40 +60,40 @@ func main() {
 	pid, success := win32.GetProcessID(PROCESSNAME)
 	log.WithFields(log.Fields{"pid": pid}).Info("GetProcessID ", PROCESSNAME)
 	if !success {
-		log.Fatal("Failed to get process ", PROCESSNAME)
+		log.Fatal("Failed to get pid ", PROCESSNAME)
 		os.Exit(1)
 	}
 
 	_, success, address := win32.GetModule(MODULENAME, pid)
 	log.WithFields(log.Fields{"address": address}).Info("GetModule ", MODULENAME)
 	if !success {
-		log.Fatal("Failed to get module ", MODULENAME)
+		log.Fatal("Failed to get module address ", MODULENAME)
 		os.Exit(1)
 	}
 
-	process, _ := win32.OpenProcess(win32.PROCESS_ALL_ACCESS, false, pid)
-	log.WithFields(log.Fields{"process": process}).Info("OpenProcess ", pid)
+	processHandle, _ := win32.OpenProcess(win32.PROCESS_ALL_ACCESS, false, pid)
+	log.WithFields(log.Fields{"processHandle": processHandle}).Info("OpenProcess ", pid)
 
 	addressLocal = uintptr(unsafe.Pointer(address))
-	log.WithFields(log.Fields{"value": convertPtrToHex(addressLocal)}).Info("addressLocal")
+	log.WithFields(log.Fields{"value": convertPtrToHex(addressLocal)}).Info("- addressLocal")
 
 	addressLocalForceJump = addressLocal + offsetForceJump
-	log.WithFields(log.Fields{"value": convertPtrToHex(addressLocalForceJump)}).Info("addressLocalForceJump")
+	log.WithFields(log.Fields{"value": convertPtrToHex(addressLocalForceJump)}).Info("- addressLocalForceJump")
 
-	win32.ReadProcessMemory(process, win32.LPCVOID(addressLocal+offsetLocalPlayer), &addressLocalPlayer, 4)
-	log.WithFields(log.Fields{"value": convertPtrToHex(addressLocalPlayer)}).Info("addressLocalPlayer")
+	win32.ReadProcessMemory(processHandle, win32.LPCVOID(addressLocal+offsetLocalPlayer), &addressLocalPlayer, 4)
+	log.WithFields(log.Fields{"value": convertPtrToHex(addressLocalPlayer)}).Info("- addressLocalPlayer")
 
 	addressLocalPlayerFlags = addressLocalPlayer + offsetLocalPlayerFlags
-	log.WithFields(log.Fields{"value": convertPtrToHex(addressLocalPlayerFlags)}).Info("addressLocalPlayerFlags")
+	log.WithFields(log.Fields{"value": convertPtrToHex(addressLocalPlayerFlags)}).Info("- addressLocalPlayerFlags")
 
 	var flagsCurrent uintptr
 
 	for {
 		if win32.GetAsyncKeyState(VKSPACE) > 0 {
-			win32.ReadProcessMemory(process, win32.LPCVOID(addressLocalPlayerFlags), &flagsCurrent, 1)
+			win32.ReadProcessMemory(processHandle, win32.LPCVOID(addressLocalPlayerFlags), &flagsCurrent, 1)
 
 			if flagsCurrent != 0 {
-				win32.WriteProcessMemory(process, addressLocalForceJump, unsafe.Pointer(&playerFlagsJump), 1)
+				win32.WriteProcessMemory(processHandle, addressLocalForceJump, unsafe.Pointer(&playerFlagsJump), 1)
 			}
 		}
 		time.Sleep(5)
