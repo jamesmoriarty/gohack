@@ -1,7 +1,8 @@
 # Gohack [![Travis CI][3]][4] [![Go Report][1]][2]
 
-External CSGO bhop hack. Only tested with local bots.
+External CSGO bhop hack. 
 
+- Tested with local bots.
 - Broken after Operation Shattered Web update. 
 - __Assume you will be banned on VAC secured servers.__
 
