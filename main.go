@@ -5,15 +5,54 @@ import (
 	util "github.com/jamesmoriarty/gohack/util"
 	win32 "github.com/jamesmoriarty/gohack/win32"
 	log "github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
+	"net/http"
 	"os"
 	"time"
 	"unsafe"
 )
 
+const url = "https://raw.githubusercontent.com/frk1/hazedumper/master/csgo.yaml"
+
 func main() {
 	config.PrintBanner()
 
 	log.SetFormatter(&log.TextFormatter{ForceColors: true})
+
+	log.WithFields(log.Fields{"url": url}).Info("Fetching...")
+	resp, err := http.Get(url)
+
+	if err != nil {
+		log.Fatal("Failed getting offsets ", err)
+		os.Exit(1)
+	}
+
+	defer resp.Body.Close()
+
+	type Offsets struct {
+		Timestamp  string `yaml:"timestamp"`
+		Signatures struct {
+			OffsetLocalPlayer int `yaml:"dwLocalPlayer"`
+			OffsetForceJump   int `yaml:"dwForceJump"`
+		} `yaml:"signatures"`
+		Netvars struct {
+			OffsetLocalPlayerFlags int `yaml:"m_fFlags"`
+		} `yaml:"netvars"`
+	}
+
+	var offsets Offsets
+
+	bytes, _ := ioutil.ReadAll(resp.Body)
+
+	log.Info("Parsing...")
+
+	err = yaml.Unmarshal(bytes, &offsets)
+
+	if err != nil {
+		log.Fatal("Failed parsing offsets ", err)
+		os.Exit(1)
+	}
 
 	var (
 		// Constants
@@ -23,9 +62,9 @@ func main() {
 		// Player flags https://github.com/ValveSoftware/source-sdk-2013/blob/master/mp/src/public/const.h#L147
 		playerFlagsJump = uintptr(0x6)
 		// Offsets https://github.com/frk1/hazedumper/blob/master/csgo.cs
-		offsetLocalPlayerFlags = uintptr(0x104)
-		offsetLocalPlayer      = uintptr(0xCFAA3C)
-		offsetForceJump        = uintptr(0x51B0758)
+		offsetLocalPlayerFlags = uintptr(offsets.Netvars.OffsetLocalPlayerFlags)
+		offsetLocalPlayer      = uintptr(offsets.Signatures.OffsetLocalPlayer)
+		offsetForceJump        = uintptr(offsets.Signatures.OffsetForceJump)
 		// Dynamic adresses
 		addressLocal            uintptr
 		addressLocalForceJump   uintptr
@@ -72,6 +111,6 @@ func main() {
 				win32.WriteProcessMemory(processHandle, addressLocalForceJump, unsafe.Pointer(&playerFlagsJump), 1)
 			}
 		}
-		time.Sleep(5)
+		time.Sleep(35)
 	}
 }
