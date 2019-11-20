@@ -5,9 +5,6 @@ import (
 	util "github.com/jamesmoriarty/gohack/util"
 	win32 "github.com/jamesmoriarty/gohack/win32"
 	log "github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
-	"net/http"
 	"os"
 	"time"
 	"unsafe"
@@ -21,36 +18,10 @@ func main() {
 	log.SetFormatter(&log.TextFormatter{ForceColors: true})
 
 	log.WithFields(log.Fields{"url": url}).Info("Fetching...")
-	resp, err := http.Get(url)
+	offsets, err := config.GetLatestOffsets(url)
 
 	if err != nil {
-		log.Fatal("Failed getting offsets ", err)
-		os.Exit(1)
-	}
-
-	defer resp.Body.Close()
-
-	type Offsets struct {
-		Timestamp  string `yaml:"timestamp"`
-		Signatures struct {
-			OffsetLocalPlayer int `yaml:"dwLocalPlayer"`
-			OffsetForceJump   int `yaml:"dwForceJump"`
-		} `yaml:"signatures"`
-		Netvars struct {
-			OffsetLocalPlayerFlags int `yaml:"m_fFlags"`
-		} `yaml:"netvars"`
-	}
-
-	var offsets Offsets
-
-	bytes, _ := ioutil.ReadAll(resp.Body)
-
-	log.Info("Parsing...")
-
-	err = yaml.Unmarshal(bytes, &offsets)
-
-	if err != nil {
-		log.Fatal("Failed parsing offsets ", err)
+		log.Fatal("Failed fetching offsets ", err)
 		os.Exit(1)
 	}
 
