@@ -7,4 +7,4 @@ set +e
 VERSION=$(git rev-parse --short HEAD)
 DATE=$(date -u +.%Y%m%d.%H%M%S)
 
-go build -v -ldflags "-X main.version=$VERSION -X main.date=$DATE"
+go build -v -ldflags "-X github.com/jamesmoriarty/gohack/config.Version=$VERSION -X github.com/jamesmoriarty/gohack/config.Date=$DATE"
