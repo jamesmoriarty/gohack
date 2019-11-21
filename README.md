@@ -3,7 +3,6 @@
 External CSGO bhop hack. 
 
 - Tested with local bots.
-- Broken after Operation Shattered Web update. 
 - __Assume you will be banned on VAC secured servers.__
 
 ![Screenshot](docs/screenshot.png)
