@@ -24,14 +24,22 @@ func GetLatestOffsets(url string) (*Offsets, error) {
 	resp, err := http.Get(url)
 
 	if err != nil {
-		return nil, errors.New("Failed getting offsets")
+		return nil, errors.New("Failed making offsets request")
 	}
 
 	defer resp.Body.Close()
 
-	bytes, _ := ioutil.ReadAll(resp.Body)
+	bytes, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return nil, errors.New("Failed reading offsets request")
+	}
 
 	err = yaml.Unmarshal(bytes, &offsets)
+
+	if err != nil {
+		return nil, errors.New("Failed parsing offsets request")
+	}
 
 	return &offsets, nil
 }

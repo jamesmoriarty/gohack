@@ -17,11 +17,11 @@ func main() {
 
 	log.SetFormatter(&log.TextFormatter{ForceColors: true})
 
-	log.WithFields(log.Fields{"url": url}).Info("Fetching...")
+	log.WithFields(log.Fields{"url": url}).Info("GetLatestOffsets")
 	offsets, err := config.GetLatestOffsets(url)
 
 	if err != nil {
-		log.Fatal("Failed fetching offsets ", err)
+		log.Fatal("Failed getting offsets ", err)
 		os.Exit(1)
 	}
 
