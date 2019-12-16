@@ -10,11 +10,11 @@ import (
 type Offsets struct {
 	Timestamp  string `yaml:"timestamp"`
 	Signatures struct {
-		OffsetLocalPlayer int `yaml:"dwLocalPlayer"`
-		OffsetForceJump   int `yaml:"dwForceJump"`
+		OffsetLocalPlayer uintptr `yaml:"dwLocalPlayer"`
+		OffsetForceJump   uintptr `yaml:"dwForceJump"`
 	} `yaml:"signatures"`
 	Netvars struct {
-		OffsetLocalPlayerFlags int `yaml:"m_fFlags"`
+		OffsetLocalPlayerFlags uintptr `yaml:"m_fFlags"`
 	} `yaml:"netvars"`
 }
 
