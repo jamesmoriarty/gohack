@@ -16,7 +16,6 @@ const (
 )
 
 func main() {
-	// Dynamic adresses
 	var (
 		addressLocal            uintptr
 		addressLocalForceJump   uintptr
