@@ -3,7 +3,6 @@ package hacks
 import (
 	config "github.com/jamesmoriarty/gohack/config"
 	win32 "github.com/jamesmoriarty/gohack/win32"
-	log "github.com/sirupsen/logrus"
 	"time"
 	"unsafe"
 )
