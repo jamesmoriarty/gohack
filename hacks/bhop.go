@@ -1,4 +1,4 @@
-package util
+package hacks
 
 import (
 	win32 "github.com/jamesmoriarty/gohack/win32"

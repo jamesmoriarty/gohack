@@ -2,6 +2,7 @@ package main
 
 import (
 	config "github.com/jamesmoriarty/gohack/config"
+	hacks "github.com/jamesmoriarty/gohack/hacks"
 	util "github.com/jamesmoriarty/gohack/util"
 	win32 "github.com/jamesmoriarty/gohack/win32"
 	log "github.com/sirupsen/logrus"
@@ -63,7 +64,7 @@ func main() {
 	addressLocalPlayerFlags = addressLocalPlayer + offsets.Netvars.OffsetLocalPlayerFlags
 	log.WithFields(log.Fields{"value": util.ConvertPtrToHex(addressLocalPlayerFlags)}).Info("- addressLocalPlayerFlags")
 
-	go util.NeverExit(func() { util.DoBHOP(processHandle, addressLocalPlayerFlags, addressLocalForceJump) })
+	go util.NeverExit(func() { hacks.DoBHOP(processHandle, addressLocalPlayerFlags, addressLocalForceJump) })
 
 	select {}
 }
