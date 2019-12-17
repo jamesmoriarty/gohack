@@ -11,25 +11,16 @@ import (
 )
 
 const (
-	url         = "https://raw.githubusercontent.com/frk1/hazedumper/master/csgo.yaml"
 	processName = "csgo.exe"
 	moduleName  = "client_panorama.dll"
 )
 
 func main() {
-	var (
-		addressLocal            uintptr
-		addressLocalForceJump   uintptr
-		addressLocalPlayer      uintptr
-		addressLocalPlayerFlags uintptr
-	)
-
 	log.SetFormatter(&log.TextFormatter{ForceColors: true})
 
 	config.PrintBanner()
 
-	log.WithFields(log.Fields{"url": url}).Info("GetLatestOffsets")
-	offsets, err := config.GetLatestOffsets(url)
+	offsets, err := config.GetOffsets()
 	if err != nil {
 		log.Fatal("Failed getting offsets ", err)
 		os.Exit(1)
@@ -52,19 +43,9 @@ func main() {
 	processHandle, _ := win32.OpenProcess(win32.PROCESS_ALL_ACCESS, false, pid)
 	log.WithFields(log.Fields{"processHandle": processHandle}).Info("OpenProcess ", pid)
 
-	addressLocal = uintptr(unsafe.Pointer(address))
-	log.WithFields(log.Fields{"value": util.ConvertPtrToHex(addressLocal)}).Info("- addressLocal")
+	addresses, err := config.GetAddresses(processHandle, uintptr(unsafe.Pointer(address)), offsets)
 
-	addressLocalForceJump = addressLocal + offsets.Signatures.OffsetForceJump
-	log.WithFields(log.Fields{"value": util.ConvertPtrToHex(addressLocalForceJump)}).Info("- addressLocalForceJump")
-
-	win32.ReadProcessMemory(processHandle, win32.LPCVOID(addressLocal+offsets.Signatures.OffsetLocalPlayer), &addressLocalPlayer, 4)
-	log.WithFields(log.Fields{"value": util.ConvertPtrToHex(addressLocalPlayer)}).Info("- addressLocalPlayer")
-
-	addressLocalPlayerFlags = addressLocalPlayer + offsets.Netvars.OffsetLocalPlayerFlags
-	log.WithFields(log.Fields{"value": util.ConvertPtrToHex(addressLocalPlayerFlags)}).Info("- addressLocalPlayerFlags")
-
-	go util.NeverExit(func() { hacks.DoBHOP(processHandle, addressLocalPlayerFlags, addressLocalForceJump) })
+	go util.NeverExit(func() { hacks.DoBHOP(processHandle, addresses) })
 
 	select {}
 }

@@ -2,9 +2,14 @@ package config
 
 import (
 	"errors"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"net/http"
+)
+
+const (
+	url = "https://raw.githubusercontent.com/frk1/hazedumper/master/csgo.yaml"
 )
 
 type Offsets struct {
@@ -18,7 +23,9 @@ type Offsets struct {
 	} `yaml:"netvars"`
 }
 
-func GetLatestOffsets(url string) (*Offsets, error) {
+func GetOffsets() (*Offsets, error) {
+	log.WithFields(log.Fields{"url": url}).Info("GetOffsets")
+
 	var offsets Offsets
 
 	resp, err := http.Get(url)
