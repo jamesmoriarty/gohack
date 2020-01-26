@@ -15,11 +15,7 @@ const (
 	moduleName  = "client_panorama.dll"
 )
 
-func main() {
-	log.SetFormatter(&log.TextFormatter{ForceColors: true})
-
-	config.PrintBanner()
-
+func instrument() (win32.HANDLE, *config.Addresses) {
 	offsets, err := config.GetOffsets()
 	if err != nil {
 		log.Fatal("Failed getting offsets ", err)
@@ -45,7 +41,21 @@ func main() {
 
 	addresses, err := config.GetAddresses(processHandle, uintptr(unsafe.Pointer(address)), offsets)
 
-	go util.NeverExit(func() { hacks.DoBHOP(processHandle, addresses) })
+	return processHandle, addresses
+}
+
+func attach() {
+	processHandle, addresses := instrument()
+
+	hacks.DoBHOP(processHandle, addresses)
+}
+
+func main() {
+	log.SetFormatter(&log.TextFormatter{ForceColors: true})
+
+	config.PrintBanner()
+
+	util.NeverExit(func() { attach() })
 
 	select {}
 }
