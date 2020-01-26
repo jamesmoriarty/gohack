@@ -3,6 +3,7 @@ package hacks
 import (
 	config "github.com/jamesmoriarty/gohack/config"
 	win32 "github.com/jamesmoriarty/gohack/win32"
+	"runtime/debug"
 	"time"
 	"unsafe"
 )
@@ -20,6 +21,8 @@ func DoBHOP(processHandle win32.HANDLE, addresses *config.Addresses) {
 
 	for {
 		if win32.GetAsyncKeyState(vkSpace) > 0 {
+			debug.SetPanicOnFault(true)
+
 			win32.ReadProcessMemory(processHandle, win32.LPCVOID(addresses.LocalPlayerFlags), &flagsCurrent, 1)
 
 			if flagsCurrent != 0 {
