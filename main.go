@@ -17,6 +17,8 @@ const (
 )
 
 func instrument() (*win32.HANDLE, *config.Addresses, error) {
+	log.SetFormatter(&log.TextFormatter{ForceColors: true})
+
 	offsets, err := config.GetOffsets()
 	if err != nil {
 		return nil, nil, errors.New("Failed getting offsets " + err.Error())
@@ -55,8 +57,6 @@ func attach() {
 }
 
 func main() {
-	log.SetFormatter(&log.TextFormatter{ForceColors: true})
-
 	config.PrintBanner()
 
 	util.NeverExit(func() { attach() })
