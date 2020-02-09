@@ -1,4 +1,5 @@
-# Gohack [![Travis CI][3]][4] [![Go Report][1]][2]
+# Gohack 
+[![Latest Tag][6]][5][![Travis CI][3]][4] [![Go Report][1]][2]
 
 External CSGO bhop hack. 
 
@@ -22,3 +23,4 @@ You can download [here][5].
 [3]: https://travis-ci.org/jamesmoriarty/gohack.svg?branch=master
 [4]: https://travis-ci.org/jamesmoriarty/gohack
 [5]: https://github.com/jamesmoriarty/gohack/releases
+[6]: https://img.shields.io/github/v/tag/jamesmoriarty/gohack.svg?logo=github&label=latest
