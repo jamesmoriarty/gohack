@@ -2,6 +2,8 @@ os: windows
 language: go
 stages:
   - Build
+env:
+  - GO111MODULE=on
 
 jobs:
   include:

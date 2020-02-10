@@ -1,3 +1,3 @@
-module github.com/jamesmoriarty/gohack/csgo
+module github.com/jamesmoriarty/gohack/test/nodll/csgo
 
 go 1.13

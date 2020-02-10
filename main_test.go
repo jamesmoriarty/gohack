@@ -29,13 +29,25 @@ func TestNoProcess(t *testing.T) {
 	}
 }
 
-func TestStubProcess(t *testing.T) {
+func TestStubProcessNoDLL(t *testing.T) {
 	withCSGOExe("test\\nodll\\csgo.exe", func() {
 		_, _, err := instrument()
 
 		got := err.Error()
 
 		if got != "Failed to get module address client_panorama.dll" {
+			t.Errorf(got)
+		}
+	})
+}
+
+func TestStubProcess(t *testing.T) {
+	withCSGOExe("test\\dll\\csgo.exe", func() {
+		_, _, err := instrument()
+
+		got := err.Error()
+
+		if got != "Failed to get LocalPlayer address" {
 			t.Errorf(got)
 		}
 	})

@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	util "github.com/jamesmoriarty/gohack/util"
 	win32 "github.com/jamesmoriarty/gohack/win32"
 	log "github.com/sirupsen/logrus"
@@ -27,6 +28,10 @@ func GetAddresses(processHandle win32.HANDLE, address uintptr, offsets *Offsets)
 
 	addresses.LocalPlayerFlags = addresses.LocalPlayer + offsets.Netvars.OffsetLocalPlayerFlags
 	log.WithFields(log.Fields{"value": util.ConvertPtrToHex(addresses.LocalPlayerFlags)}).Info("- addressLocalPlayerFlags")
+
+	if addresses.LocalPlayer == 0x0 {
+		return nil, errors.New("Failed to get LocalPlayer address")
+	}
 
 	return &addresses, nil
 }

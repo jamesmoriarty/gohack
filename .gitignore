@@ -1,3 +1,6 @@
 gohack.exe
-csgo.exe
+csgo.exe*
+client_panorama.*
+!client_panorama.go
+!client_panorama.def
 cover.out

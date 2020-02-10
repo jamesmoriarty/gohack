@@ -41,7 +41,7 @@ func instrument() (*win32.HANDLE, *config.Addresses, error) {
 
 	addresses, err := config.GetAddresses(processHandle, uintptr(unsafe.Pointer(address)), offsets)
 
-	return &processHandle, addresses, nil
+	return &processHandle, addresses, err
 }
 
 func attach() {
