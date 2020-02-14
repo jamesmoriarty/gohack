@@ -1,6 +1,6 @@
 package main
 
- // https://github.com/golang/go/issues/22192
+// https://github.com/golang/go/issues/22192
 import (
 	"fmt"
 	"math"
@@ -15,7 +15,8 @@ var (
 
 func main() {
 	fmt.Printf("dll=%v proc=%v", dll, proc)
-	proc.Call(1, 2)
-	<-time.After(time.Duration(math.MaxInt64))
 
+	proc.Call(1, 2)
+
+	<-time.After(time.Duration(math.MaxInt64))
 }

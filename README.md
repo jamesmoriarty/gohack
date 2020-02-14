@@ -2,10 +2,10 @@
 
 [![Latest Tag][6]][5] [![Travis CI][3]][4] [![Go Report][1]][2]
 
-External CSGO bhop hack. 
-
-- Tested with local bots.
-- __Assume you will be banned on VAC secured servers.__
+- Injected from external process.
+- Tested against stub process and dlls.
+- Tested against local bots.
+- Assume you will be banned on VAC secured servers.
 
 ![Screenshot](docs/screenshot.png)
 

@@ -4,7 +4,6 @@ import (
 	"errors"
 	config "github.com/jamesmoriarty/gohack/config"
 	hacks "github.com/jamesmoriarty/gohack/hacks"
-	util "github.com/jamesmoriarty/gohack/util"
 	win32 "github.com/jamesmoriarty/gohack/win32"
 	log "github.com/sirupsen/logrus"
 	"os"
@@ -44,7 +43,9 @@ func instrument() (*win32.HANDLE, *config.Addresses, error) {
 	return &processHandle, addresses, err
 }
 
-func attach() {
+func main() {
+	config.PrintBanner()
+
 	processHandle, addresses, err := instrument()
 
 	if err != nil {
@@ -53,13 +54,7 @@ func attach() {
 		os.Exit(1)
 	}
 
-	hacks.DoBHOP(*processHandle, addresses)
-}
-
-func main() {
-	config.PrintBanner()
-
-	util.NeverExit(func() { attach() })
+	hacks.RunBHOP(*processHandle, addresses)
 
 	select {}
 }

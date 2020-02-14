@@ -11,7 +11,7 @@ const (
 	vkSpace = 0x20 // https://docs.microsoft.com/en-gb/windows/win32/inputdev/virtual-key-codes
 )
 
-func DoBHOP(processHandle win32.HANDLE, addresses *config.Addresses) {
+func RunBHOP(processHandle win32.HANDLE, addresses *config.Addresses) {
 	var (
 		flagsCurrent       uintptr
 		playerFlagsJump    = uintptr(0x6)

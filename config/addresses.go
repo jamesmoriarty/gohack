@@ -2,9 +2,10 @@ package config
 
 import (
 	"errors"
-	util "github.com/jamesmoriarty/gohack/util"
+	"fmt"
 	win32 "github.com/jamesmoriarty/gohack/win32"
 	log "github.com/sirupsen/logrus"
+	"strconv"
 )
 
 type Addresses struct {
@@ -18,20 +19,27 @@ func GetAddresses(processHandle win32.HANDLE, address uintptr, offsets *Offsets)
 	addresses := Addresses{}
 
 	addresses.Local = address
-	log.WithFields(log.Fields{"value": util.ConvertPtrToHex(addresses.Local)}).Info("- addressLocal")
+	log.WithFields(log.Fields{"value": convertPtrToHex(addresses.Local)}).Info("- addressLocal")
 
 	addresses.LocalForceJump = addresses.Local + offsets.Signatures.OffsetForceJump
-	log.WithFields(log.Fields{"value": util.ConvertPtrToHex(addresses.LocalForceJump)}).Info("- addressLocalForceJump")
+	log.WithFields(log.Fields{"value": convertPtrToHex(addresses.LocalForceJump)}).Info("- addressLocalForceJump")
 
 	win32.ReadProcessMemory(processHandle, win32.LPCVOID(addresses.Local+offsets.Signatures.OffsetLocalPlayer), &addresses.LocalPlayer, 4)
-	log.WithFields(log.Fields{"value": util.ConvertPtrToHex(addresses.LocalPlayer)}).Info("- addressLocalPlayer")
+	log.WithFields(log.Fields{"value": convertPtrToHex(addresses.LocalPlayer)}).Info("- addressLocalPlayer")
 
 	addresses.LocalPlayerFlags = addresses.LocalPlayer + offsets.Netvars.OffsetLocalPlayerFlags
-	log.WithFields(log.Fields{"value": util.ConvertPtrToHex(addresses.LocalPlayerFlags)}).Info("- addressLocalPlayerFlags")
+	log.WithFields(log.Fields{"value": convertPtrToHex(addresses.LocalPlayerFlags)}).Info("- addressLocalPlayerFlags")
 
 	if addresses.LocalPlayer == 0x0 {
 		return nil, errors.New("Failed to get LocalPlayer address")
 	}
 
 	return &addresses, nil
+}
+
+func convertPtrToHex(ptr uintptr) string {
+	s := fmt.Sprintf("%d", ptr)
+	n, _ := strconv.Atoi(s)
+	h := fmt.Sprintf("0x%x", n)
+	return h
 }
