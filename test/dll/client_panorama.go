@@ -1,5 +1,6 @@
 package main
 
+ // https://github.com/golang/go/issues/22192
 import (
 	"C"
 	"fmt"
@@ -15,7 +16,6 @@ func HelloWorld() {
 	fmt.Println("HelloWorld")
 }
 
-// https://github.com/golang/go/issues/22192
 func main() {
 
 }

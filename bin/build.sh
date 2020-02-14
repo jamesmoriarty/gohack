@@ -4,6 +4,10 @@ set -u
 set +x
 set +e
 
+GOOS=windows
+GOARCH=amd64
+CGO_ENABLED=1
+
 VERSION=$(git rev-parse --short HEAD)
 DATE=$(date -u +.%Y%m%d.%H%M%S)
 
