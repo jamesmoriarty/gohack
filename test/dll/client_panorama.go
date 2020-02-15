@@ -1,8 +1,7 @@
 package main
 
-// https://github.com/golang/go/issues/22192
 import (
-	"C"
+	"C" // https://github.com/golang/go/issues/22192
 	"fmt"
 )
 
