@@ -1,19 +1,9 @@
-SETLOCAL ENABLEDELAYEDEXPANSION
+go version
 
 set GOARCH=386
 set GOOS=windows
 set CGO_ENABLED=1
 set PATH=%PATH%;C:\MinGW\bin
-
-go env
-
-go version
-gofmt -s -w .
-echo Exit Code is %errorlevel%
-
-go get -u golang.org/x/lint/golint
-golint .
-echo Exit Code is %errorlevel%
 
 cd .\test\dll
 go build -buildmode=c-archive client_panorama.go
@@ -27,15 +17,10 @@ go build -v -ldflags -H=windowsgui -o csgo.exe main.go
 cd ..\..
 
 go test -v -coverprofile cover.out
-echo Exit Code is %errorlevel%
 
-set GOOS=windows
-set CGO_ENABLED=1
 set GOARCH=amd64
 
 for /f %%a in ('powershell -Command "git rev-parse --short HEAD"') do set VERSION=%%a
 for /f %%a in ('powershell -Command "Get-Date -format yyyyMMdd.HHmmss"') do set DATE=%%a
 
 go build -v -ldflags "-X github.com/jamesmoriarty/gohack/config.Version=%VERSION% -X github.com/jamesmoriarty/gohack/config.Date=%DATE%"
-
-
