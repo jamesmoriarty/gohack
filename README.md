@@ -2,13 +2,15 @@
 
 [![Latest Tag][6]][5] [![Travis CI][3]][4] [![Go Report][1]][2]
 
+Experimental CSGO external game exploit.
+
+![Screenshot](docs/screenshot.png)
+
 - Injected from external process.
 - Tested against stub process and dlls.
 - Tested against local bots.
 - Assume you will be banned on VAC secured servers.
 - Credit to [1jz][7] which this was originally based on.
-
-![Screenshot](docs/screenshot.png)
 
 ## Usage
 
