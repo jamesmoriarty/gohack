@@ -3,6 +3,7 @@ package main
 import (
 	"os/exec"
 	"testing"
+	"strings"
 )
 
 func withEXE(path string, f func()) {
@@ -14,7 +15,10 @@ func withEXE(path string, f func()) {
 		panic(err)
 	}
 
-	defer exec.Command("TASKKILL", "/F", "/IM", "csgo.exe").Run()
+	ss := strings.Split(path, "\\")
+	exe := ss[len(ss)-1]
+
+	defer exec.Command("TASKKILL", "/F", "/IM", exe).Run()
 
 	f()
 }
