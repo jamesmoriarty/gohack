@@ -22,6 +22,10 @@ Experimental CSGO external game exploit.
 
 You can download [here][5].
 
+## What
+
+![Screenshot](docs/diagram-1.png)
+
 [1]: https://goreportcard.com/badge/github.com/jamesmoriarty/gohack
 [2]: https://goreportcard.com/report/github.com/jamesmoriarty/gohack
 [3]: https://travis-ci.org/jamesmoriarty/gohack.svg?branch=master
