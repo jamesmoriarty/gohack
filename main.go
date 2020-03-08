@@ -20,7 +20,7 @@ func instrument() (*win32.HANDLE, *config.Addresses, error) {
 
 	offsets, err := config.GetOffsets()
 	if err != nil {
-		return nil, nil, errors.New("Failed getting offsets " + err.Error())
+		return nil, nil, errors.New("Failed to get offsets " + err.Error())
 	}
 
 	pid, success := win32.GetProcessID(processName)
@@ -35,18 +35,18 @@ func instrument() (*win32.HANDLE, *config.Addresses, error) {
 		return nil, nil, errors.New("Failed to get module address " + moduleName)
 	}
 
-	processHandle, _ := win32.OpenProcess(win32.PROCESS_ALL_ACCESS, false, pid)
-	log.WithFields(log.Fields{"processHandle": processHandle}).Info("OpenProcess ", pid)
+	handle, err := win32.OpenProcess(win32.PROCESS_ALL_ACCESS, false, pid)
+	log.WithFields(log.Fields{"handle": handle}).Info("OpenProcess ", pid)
 
-	addresses, err := config.GetAddresses(processHandle, uintptr(unsafe.Pointer(address)), offsets)
+	addresses, err := config.GetAddresses(handle, uintptr(unsafe.Pointer(address)), offsets)
 
-	return &processHandle, addresses, err
+	return &handle, addresses, err
 }
 
 func main() {
 	config.PrintBanner()
 
-	processHandle, addresses, err := instrument()
+	handle, addresses, err := instrument()
 
 	if err != nil {
 		log.Fatal(err)
@@ -54,7 +54,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	hacks.RunBHOP(*processHandle, addresses)
+	hacks.RunBHOP(*handle, addresses)
 
 	select {}
 }

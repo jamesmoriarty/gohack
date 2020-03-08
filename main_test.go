@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func withCSGOExe(path string, f func()) {
+func withEXE(path string, f func()) {
 	s := []string{"cmd.exe", "/C", "start", path}
 
 	cmd := exec.Command(s[0], s[1:]...)
@@ -30,7 +30,7 @@ func TestNoProcess(t *testing.T) {
 }
 
 func TestStubProcessNoDLL(t *testing.T) {
-	withCSGOExe("test\\nodll\\csgo.exe", func() {
+	withEXE("test\\nodll\\csgo.exe", func() {
 		_, _, err := instrument()
 
 		got := err.Error()
@@ -42,7 +42,7 @@ func TestStubProcessNoDLL(t *testing.T) {
 }
 
 func TestStubProcess(t *testing.T) {
-	withCSGOExe("test\\dll\\csgo.exe", func() {
+	withEXE("test\\dll\\csgo.exe", func() {
 		_, _, err := instrument()
 
 		got := err.Error()

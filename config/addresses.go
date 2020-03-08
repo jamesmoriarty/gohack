@@ -15,7 +15,7 @@ type Addresses struct {
 	LocalPlayerFlags uintptr
 }
 
-func GetAddresses(processHandle win32.HANDLE, address uintptr, offsets *Offsets) (*Addresses, error) {
+func GetAddresses(handle win32.HANDLE, address uintptr, offsets *Offsets) (*Addresses, error) {
 	addresses := Addresses{}
 
 	addresses.Local = address
@@ -24,7 +24,7 @@ func GetAddresses(processHandle win32.HANDLE, address uintptr, offsets *Offsets)
 	addresses.LocalForceJump = addresses.Local + offsets.Signatures.OffsetForceJump
 	log.WithFields(log.Fields{"value": convertPtrToHex(addresses.LocalForceJump)}).Info("- addressLocalForceJump")
 
-	win32.ReadProcessMemory(processHandle, win32.LPCVOID(addresses.Local+offsets.Signatures.OffsetLocalPlayer), &addresses.LocalPlayer, 4)
+	win32.ReadProcessMemory(handle, win32.LPCVOID(addresses.Local+offsets.Signatures.OffsetLocalPlayer), &addresses.LocalPlayer, 4)
 	log.WithFields(log.Fields{"value": convertPtrToHex(addresses.LocalPlayer)}).Info("- addressLocalPlayer")
 
 	addresses.LocalPlayerFlags = addresses.LocalPlayer + offsets.Netvars.OffsetLocalPlayerFlags

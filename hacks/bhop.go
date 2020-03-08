@@ -8,10 +8,10 @@ import (
 )
 
 const (
-	vkSpace = 0x20 // https://docs.microsoft.com/en-gb/windows/win32/inputdev/virtual-key-codes
+	VKSpace = 0x20 // https://docs.microsoft.com/en-gb/windows/win32/inputdev/virtual-key-codes
 )
 
-func RunBHOP(processHandle win32.HANDLE, addresses *config.Addresses) {
+func RunBHOP(handle win32.HANDLE, addresses *config.Addresses) {
 	var (
 		flagsCurrent       uintptr
 		playerFlagsJump    = uintptr(0x6)
@@ -19,11 +19,11 @@ func RunBHOP(processHandle win32.HANDLE, addresses *config.Addresses) {
 	)
 
 	for {
-		if win32.GetAsyncKeyState(vkSpace) > 0 {
-			win32.ReadProcessMemory(processHandle, win32.LPCVOID(addresses.LocalPlayerFlags), &flagsCurrent, 1)
+		if win32.GetAsyncKeyState(VKSpace) > 0 {
+			win32.ReadProcessMemory(handle, win32.LPCVOID(addresses.LocalPlayerFlags), &flagsCurrent, 1)
 
 			if flagsCurrent != 0 {
-				win32.WriteProcessMemory(processHandle, addresses.LocalForceJump, playerFlagsJumpPtr, 1)
+				win32.WriteProcessMemory(handle, addresses.LocalForceJump, playerFlagsJumpPtr, 1)
 			}
 		}
 		time.Sleep(35)
