@@ -6,6 +6,7 @@
 - Tested against stub process and dlls.
 - Tested against local bots.
 - Assume you will be banned on VAC secured servers.
+- Credit to [1jz][7] which this was originally based on.
 
 ![Screenshot](docs/screenshot.png)
 
@@ -25,3 +26,4 @@ You can download [here][5].
 [4]: https://travis-ci.org/jamesmoriarty/gohack
 [5]: https://github.com/jamesmoriarty/gohack/releases
 [6]: https://img.shields.io/github/v/tag/jamesmoriarty/gohack.svg?logo=github&label=latest
+[7]: https://github.com/1jz/csgo-go-bhop
