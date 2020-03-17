@@ -22,6 +22,8 @@ Experimental CSGO external game exploit.
 
 You can download [here][5].
 
+## Install
+
 ```
 go get -v github.com/jamesmoriarty/gohack
 go install github.com/jamesmoriarty/gohack
