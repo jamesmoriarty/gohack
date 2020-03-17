@@ -1,6 +1,6 @@
 # Gohack 
 
-[![Latest Tag][6]][5] [![Travis CI][3]][4] [![Go Report][1]][2]
+[![Latest Tag][6]][5] [![Travis CI][3]][4] [![Go Report][1]][2] ![GitHub Releases][8]
 
 Experimental CSGO external game exploit.
 
@@ -38,3 +38,4 @@ go install github.com/jamesmoriarty/gohack
 [5]: https://github.com/jamesmoriarty/gohack/releases
 [6]: https://img.shields.io/github/v/tag/jamesmoriarty/gohack.svg?logo=github&label=latest
 [7]: https://github.com/1jz/csgo-go-bhop
+[8]: https://img.shields.io/github/downloads/jamesmoriarty/gohack/latest/total
