@@ -6,12 +6,6 @@ Experimental CSGO external game exploit.
 
 ![Screenshot](docs/screenshot.png)
 
-- Injected from external process.
-- Tested against stub process and dlls.
-- Tested against local bots.
-- Assume you will be banned on VAC secured servers.
-- Credit to [1jz][7] which this was originally based on.
-
 ## Usage
 
 ```
@@ -30,6 +24,12 @@ go install github.com/jamesmoriarty/gohack
 ```
 
 ## What
+
+- Injected from external process.
+- Tested against stub process and dlls.
+- Tested against local bots.
+- Assume you will be banned on VAC secured servers.
+- Credit to [1jz][7] which this was originally based on.
 
 ![Screenshot](docs/diagram-1.png)
 
