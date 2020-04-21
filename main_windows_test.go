@@ -2,8 +2,8 @@ package main
 
 import (
 	"os/exec"
-	"testing"
 	"strings"
+	"testing"
 )
 
 func withEXE(path string, f func()) {

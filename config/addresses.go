@@ -3,7 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
-	win32 "github.com/jamesmoriarty/gohack/win32"
+	"github.com/jamesmoriarty/gomem"
 	log "github.com/sirupsen/logrus"
 	"strconv"
 )
@@ -15,7 +15,7 @@ type Addresses struct {
 	LocalPlayerFlags uintptr
 }
 
-func GetAddresses(handle win32.HANDLE, address uintptr, offsets *Offsets) (*Addresses, error) {
+func GetAddresses(p *gomem.Process, address uintptr, offsets *Offsets) (*Addresses, error) {
 	addresses := Addresses{}
 
 	addresses.Local = address
@@ -24,7 +24,7 @@ func GetAddresses(handle win32.HANDLE, address uintptr, offsets *Offsets) (*Addr
 	addresses.LocalForceJump = addresses.Local + offsets.Signatures.OffsetForceJump
 	log.WithFields(log.Fields{"value": convertPtrToHex(addresses.LocalForceJump)}).Info("- addressLocalForceJump")
 
-	win32.ReadProcessMemory(handle, win32.LPCVOID(addresses.Local+offsets.Signatures.OffsetLocalPlayer), &addresses.LocalPlayer, 4)
+	p.Read(addresses.Local+offsets.Signatures.OffsetLocalPlayer, &addresses.LocalPlayer, 4)
 	log.WithFields(log.Fields{"value": convertPtrToHex(addresses.LocalPlayer)}).Info("- addressLocalPlayer")
 
 	addresses.LocalPlayerFlags = addresses.LocalPlayer + offsets.Netvars.OffsetLocalPlayerFlags
