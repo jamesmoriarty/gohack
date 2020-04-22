@@ -45,17 +45,18 @@ func instrument() (*gomem.Process, *config.Addresses, error) {
 
 func RunBHOP(p *gomem.Process, addresses *config.Addresses) {
 	var (
-		flagsCurrent       uintptr
-		playerFlagsJump    = uintptr(0x6)
-		playerFlagsJumpPtr = (uintptr)(unsafe.Pointer(playerFlagsJump))
+		readValue byte
+		readValuePtr  = (*uintptr)(unsafe.Pointer(&readValue))
+		writeValue    = byte(0x6)
+		writeValuePtr = (*uintptr)(unsafe.Pointer(&writeValue))
 	)
 
 	for {
 		if gomem.IsKeyDown(0x20) { // https://docs.microsoft.com/en-gb/windows/win32/inputdev/virtual-key-codes
-			p.Read(addresses.LocalPlayerFlags, &flagsCurrent, 1)
+			p.Read(addresses.LocalPlayerFlags, readValuePtr, unsafe.Sizeof(readValue))
 
-			if flagsCurrent != 0 {
-				p.Write(addresses.LocalForceJump, &playerFlagsJumpPtr, 1)
+			if readValue != 0 {
+				p.Write(addresses.LocalForceJump, writeValuePtr, unsafe.Sizeof(writeValue))
 			}
 		}
 		time.Sleep(35)
