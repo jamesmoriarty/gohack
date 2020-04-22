@@ -45,7 +45,7 @@ func instrument() (*gomem.Process, *config.Addresses, error) {
 
 func RunBHOP(p *gomem.Process, addresses *config.Addresses) {
 	var (
-		readValue int
+		readValue byte
 		readValuePtr  = (*uintptr)(unsafe.Pointer(&readValue))
 		writeValue    = byte(0x6)
 		writeValuePtr = (*uintptr)(unsafe.Pointer(&writeValue))
