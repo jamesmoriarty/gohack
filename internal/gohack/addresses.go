@@ -10,11 +10,11 @@ type Addresses struct {
 	Offsets *Offsets
 }
 
-func (a *Addresses) LocalForceJump() (uintptr) {
+func (a *Addresses) LocalForceJump() uintptr {
 	return a.Local + a.Offsets.Signatures.OffsetForceJump
 }
 
-func (a *Addresses) LocalPlayer() (uintptr) {
+func (a *Addresses) LocalPlayer() uintptr {
 	var localPlayer uintptr
 
 	a.Process.Read(a.Local+a.Offsets.Signatures.OffsetLocalPlayer, &localPlayer, 4)
@@ -22,6 +22,6 @@ func (a *Addresses) LocalPlayer() (uintptr) {
 	return localPlayer
 }
 
-func (a *Addresses)LocalPlayerFlags() (uintptr) {
+func (a *Addresses) LocalPlayerFlags() uintptr {
 	return a.LocalPlayer() + a.Offsets.Netvars.OffsetLocalPlayerFlags
 }
