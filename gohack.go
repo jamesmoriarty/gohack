@@ -6,6 +6,7 @@ import (
 	"github.com/jamesmoriarty/gomem"
 	log "github.com/sirupsen/logrus"
 	"time"
+	"strconv"
 	"unsafe"
 )
 
@@ -29,6 +30,13 @@ func PrintBanner() {
 	fmt.Printf(Banner, Version, Date)
 
 	fmt.Println()
+}
+
+func ptrToHex(ptr uintptr) string {
+	s := fmt.Sprintf("%d", ptr)
+	n, _ := strconv.Atoi(s)
+	h := fmt.Sprintf("0x%x", n)
+	return h
 }
 
 const (
@@ -59,7 +67,14 @@ func Instrument() (*gomem.Process, *Addresses, error) {
 	process.Open()
 	log.WithFields(log.Fields{"handle": process.Handle}).Info("OpenProcess ", process.ID)
 
-	addresses, err := GetAddresses(process, address, offsets)
+	addresses := &Addresses{Process: process, Local: address, Offsets: offsets}
+	if addresses.LocalPlayer() == 0 {
+		return process, addresses, errors.New("Failed to get LocalPlayer address")
+	}
+	log.WithFields(log.Fields{"value": ptrToHex(addresses.Local)}).Info("- addressLocal")
+	log.WithFields(log.Fields{"value": ptrToHex(addresses.LocalForceJump())}).Info("- addressLocalForceJump")
+	log.WithFields(log.Fields{"value": ptrToHex(addresses.LocalPlayer())}).Info("- addressLocalPlayer")
+	log.WithFields(log.Fields{"value": ptrToHex(addresses.LocalPlayerFlags())}).Info("- addressLocalPlayerFlags")
 
 	return process, addresses, err
 }
@@ -74,10 +89,10 @@ func RunBHOP(p *gomem.Process, addresses *Addresses) {
 
 	for {
 		if gomem.IsKeyDown(0x20) { // https://docs.microsoft.com/en-gb/windows/win32/inputdev/virtual-key-codes
-			p.Read(addresses.LocalPlayerFlags, readValuePtr, unsafe.Sizeof(readValue))
+			p.Read(addresses.LocalPlayerFlags(), readValuePtr, unsafe.Sizeof(readValue))
 
 			if (readValue & (1 << 0)) > 0 { // FL_ONGROUND (1<<0) // https://github.com/ValveSoftware/source-sdk-2013/blob/master/mp/src/public/const.h
-				p.Write(addresses.LocalForceJump, writeValuePtr, unsafe.Sizeof(writeValue))
+				p.Write(addresses.LocalForceJump(), writeValuePtr, unsafe.Sizeof(writeValue))
 			}
 		}
 
