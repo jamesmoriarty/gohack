@@ -6,22 +6,22 @@ import (
 
 type Addresses struct {
 	Process *gomem.Process
-	Local   uintptr
+	Offset   uintptr
 	Offsets *Offsets
 }
 
-func (a *Addresses) LocalForceJump() uintptr {
-	return a.Local + a.Offsets.Signatures.OffsetForceJump
+func (a *Addresses) OffsetForceJump() uintptr {
+	return a.Offset + a.Offsets.Signatures.OffsetForceJump
 }
 
-func (a *Addresses) LocalPlayer() uintptr {
-	var localPlayer uintptr
+func (a *Addresses) OffsetPlayer() uintptr {
+	var buffer uintptr
 
-	a.Process.Read(a.Local+a.Offsets.Signatures.OffsetLocalPlayer, &localPlayer, 4)
+	a.Process.Read(a.Offset+a.Offsets.Signatures.OffsetPlayer, &buffer, 4)
 
-	return localPlayer
+	return buffer
 }
 
-func (a *Addresses) LocalPlayerFlags() uintptr {
-	return a.LocalPlayer() + a.Offsets.Netvars.OffsetLocalPlayerFlags
+func (a *Addresses) OffsetPlayerFlags() uintptr {
+	return a.OffsetPlayer() + a.Offsets.Netvars.OffsetOffsetPlayerFlags
 }

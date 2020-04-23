@@ -51,7 +51,7 @@ func TestStubProcess(t *testing.T) {
 
 		got := err.Error()
 
-		if got != "Failed to get LocalPlayer address" {
+		if got != "Failed to get OffsetPlayer" {
 			t.Errorf(got)
 		}
 	})
