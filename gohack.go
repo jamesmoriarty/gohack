@@ -1,24 +1,45 @@
-package main
+package gohack
 
 import (
+	"fmt"
 	"errors"
-	"github.com/jamesmoriarty/gohack/config"
 	"github.com/jamesmoriarty/gomem"
 	log "github.com/sirupsen/logrus"
-	"os"
 	"time"
 	"unsafe"
 )
+
+var (
+	Version string
+	Date    string
+	Banner  = `
+    ___       ___       ___       ___       ___       ___   
+   /\  \     /\  \     /\__\     /\  \     /\  \     /\__\  
+  /::\  \   /::\  \   /:/__/_   /::\  \   /::\  \   /:/ _/_ 
+ /:/\:\__\ /:/\:\__\ /::\/\__\ /::\:\__\ /:/\:\__\ /::-"\__\
+ \:\:\/__/ \:\/:/  / \/\::/  / \/\::/  / \:\ \/__/ \;:;-",-"
+  \::/  /   \::/  /    /:/  /    /:/  /   \:\__\    |:|  |  
+   \/__/     \/__/     \/__/     \/__/     \/__/     \|__| 
+ 
+version: %s-%s
+`
+)
+
+func PrintBanner() {
+	fmt.Printf(Banner, Version, Date)
+
+	fmt.Println()
+}
 
 const (
 	processName = "csgo.exe"
 	moduleName  = "client_panorama.dll"
 )
 
-func instrument() (*gomem.Process, *config.Addresses, error) {
+func Instrument() (*gomem.Process, *Addresses, error) {
 	log.SetFormatter(&log.TextFormatter{ForceColors: true})
 
-	offsets, err := config.GetOffsets()
+	offsets, err := GetOffsets()
 	if err != nil {
 		return nil, nil, errors.New("Failed to get offsets " + err.Error())
 	}
@@ -38,12 +59,12 @@ func instrument() (*gomem.Process, *config.Addresses, error) {
 	process.Open()
 	log.WithFields(log.Fields{"handle": process.Handle}).Info("OpenProcess ", process.ID)
 
-	addresses, err := config.GetAddresses(process, address, offsets)
+	addresses, err := GetAddresses(process, address, offsets)
 
 	return process, addresses, err
 }
 
-func RunBHOP(p *gomem.Process, addresses *config.Addresses) {
+func RunBHOP(p *gomem.Process, addresses *Addresses) {
 	var (
 		readValue     byte
 		readValuePtr  = (*uintptr)(unsafe.Pointer(&readValue))
@@ -64,16 +85,3 @@ func RunBHOP(p *gomem.Process, addresses *config.Addresses) {
 	}
 }
 
-func main() {
-	config.PrintBanner()
-
-	process, addresses, err := instrument()
-
-	if err != nil {
-		log.Fatal(err)
-
-		os.Exit(1)
-	}
-
-	RunBHOP(process, addresses)
-}

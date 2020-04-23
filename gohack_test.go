@@ -1,4 +1,4 @@
-package main
+package gohack
 
 import (
 	"os/exec"
@@ -24,7 +24,7 @@ func withEXE(path string, f func()) {
 }
 
 func TestNoProcess(t *testing.T) {
-	_, _, err := instrument()
+	_, _, err := Instrument()
 
 	got := err.Error()
 
@@ -35,7 +35,7 @@ func TestNoProcess(t *testing.T) {
 
 func TestStubProcessNoDLL(t *testing.T) {
 	withEXE("test\\nodll\\csgo.exe", func() {
-		_, _, err := instrument()
+		_, _, err := Instrument()
 
 		got := err.Error()
 
@@ -47,7 +47,7 @@ func TestStubProcessNoDLL(t *testing.T) {
 
 func TestStubProcess(t *testing.T) {
 	withEXE("test\\dll\\csgo.exe", func() {
-		_, _, err := instrument()
+		_, _, err := Instrument()
 
 		got := err.Error()
 

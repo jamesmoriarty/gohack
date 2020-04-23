@@ -24,4 +24,4 @@ set GOARCH=amd64
 for /f %%a in ('powershell -Command "git rev-parse --short HEAD"') do set VERSION=%%a
 for /f %%a in ('powershell -Command "Get-Date -format yyyyMMdd.HHmmss"') do set DATE=%%a
 
-go build -v -ldflags "-X github.com/jamesmoriarty/gohack/config.Version=%VERSION% -X github.com/jamesmoriarty/gohack/config.Date=%DATE%"
+go build -v -ldflags "-X github.com/jamesmoriarty/gohack.Version=%VERSION% -X github.com/jamesmoriarty/gohack.Date=%DATE%" cmd/gohack.go
