@@ -38,14 +38,14 @@ func instrument() (*gomem.Process, *config.Addresses, error) {
 	process.Open()
 	log.WithFields(log.Fields{"handle": process.Handle}).Info("OpenProcess ", process.ID)
 
-	addresses, err := config.GetAddresses(process, uintptr(unsafe.Pointer(address)), offsets)
+	addresses, err := config.GetAddresses(process, address, offsets)
 
 	return process, addresses, err
 }
 
 func RunBHOP(p *gomem.Process, addresses *config.Addresses) {
 	var (
-		readValue byte
+		readValue     byte
 		readValuePtr  = (*uintptr)(unsafe.Pointer(&readValue))
 		writeValue    = byte(0x6)
 		writeValuePtr = (*uintptr)(unsafe.Pointer(&writeValue))
@@ -55,7 +55,7 @@ func RunBHOP(p *gomem.Process, addresses *config.Addresses) {
 		if gomem.IsKeyDown(0x20) { // https://docs.microsoft.com/en-gb/windows/win32/inputdev/virtual-key-codes
 			p.Read(addresses.LocalPlayerFlags, readValuePtr, unsafe.Sizeof(readValue))
 
-			if ((readValue & (1<<0)) > 0){ // FL_ONGROUND (1<<0) // https://github.com/ValveSoftware/source-sdk-2013/blob/master/mp/src/public/const.h
+			if (readValue & (1 << 0)) > 0 { // FL_ONGROUND (1<<0) // https://github.com/ValveSoftware/source-sdk-2013/blob/master/mp/src/public/const.h
 				p.Write(addresses.LocalForceJump, writeValuePtr, unsafe.Sizeof(writeValue))
 			}
 		}
