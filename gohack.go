@@ -1,12 +1,13 @@
 package gohack
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
+	"github.com/jamesmoriarty/gohack/internal/gohack"
 	"github.com/jamesmoriarty/gomem"
 	log "github.com/sirupsen/logrus"
-	"time"
 	"strconv"
+	"time"
 	"unsafe"
 )
 
@@ -44,10 +45,10 @@ const (
 	moduleName  = "client_panorama.dll"
 )
 
-func Instrument() (*gomem.Process, *Addresses, error) {
+func Instrument() (*gomem.Process, *gohack.Addresses, error) {
 	log.SetFormatter(&log.TextFormatter{ForceColors: true})
 
-	offsets, err := GetOffsets()
+	offsets, err := gohack.GetOffsets()
 	if err != nil {
 		return nil, nil, errors.New("Failed to get offsets " + err.Error())
 	}
@@ -67,7 +68,7 @@ func Instrument() (*gomem.Process, *Addresses, error) {
 	process.Open()
 	log.WithFields(log.Fields{"handle": process.Handle}).Info("OpenProcess ", process.ID)
 
-	addresses := &Addresses{Process: process, Local: address, Offsets: offsets}
+	addresses := &gohack.Addresses{Process: process, Local: address, Offsets: offsets}
 	if addresses.LocalPlayer() == 0 {
 		return process, addresses, errors.New("Failed to get LocalPlayer address")
 	}
@@ -79,7 +80,7 @@ func Instrument() (*gomem.Process, *Addresses, error) {
 	return process, addresses, err
 }
 
-func RunBHOP(p *gomem.Process, addresses *Addresses) {
+func RunBHOP(p *gomem.Process, addresses *gohack.Addresses) {
 	var (
 		readValue     byte
 		readValuePtr  = (*uintptr)(unsafe.Pointer(&readValue))
@@ -99,4 +100,3 @@ func RunBHOP(p *gomem.Process, addresses *Addresses) {
 		time.Sleep(90) // 15ms tick
 	}
 }
-
