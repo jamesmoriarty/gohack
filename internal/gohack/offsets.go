@@ -2,14 +2,13 @@ package gohack
 
 import (
 	"errors"
-	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"net/http"
 )
 
 const (
-	url = "https://raw.githubusercontent.com/frk1/hazedumper/master/csgo.yaml"
+	OffsetsURL = "https://raw.githubusercontent.com/frk1/hazedumper/master/csgo.yaml"
 )
 
 type Offsets struct {
@@ -24,11 +23,9 @@ type Offsets struct {
 }
 
 func GetOffsets() (*Offsets, error) {
-	log.WithFields(log.Fields{"url": url}).Info("GetOffsets")
-
 	var offsets Offsets
 
-	resp, err := http.Get(url)
+	resp, err := http.Get(OffsetsURL)
 
 	if err != nil {
 		return nil, errors.New("Failed making offsets request")

@@ -45,6 +45,7 @@ func Instrument() (*gomem.Process, *gohack.Client, error) {
 	if err != nil {
 		return nil, nil, errors.New("Failed to get offsets " + err.Error())
 	}
+	log.WithFields(log.Fields{"url": gohack.OffsetsURL}).Info("GetOffsets")
 
 	process, err := gomem.GetFromProcessName("csgo.exe")
 	if err != nil {
@@ -56,7 +57,6 @@ func Instrument() (*gomem.Process, *gohack.Client, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-
 	log.WithFields(log.Fields{"handle": process.Handle}).Info("OpenProcess ", process.ID)
 	log.WithFields(log.Fields{"value": ptrToHex(client.Offset)}).Info("- Offset")
 	log.WithFields(log.Fields{"value": ptrToHex(client.OffsetForceJump())}).Info("- OffsetForceJump")
