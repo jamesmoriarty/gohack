@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func withEXE(path string, f func()) {
+func withProcess(path string, f func()) {
 	s := []string{"cmd.exe", "/C", "start", path}
 
 	cmd := exec.Command(s[0], s[1:]...)
@@ -28,31 +28,37 @@ func TestNoProcess(t *testing.T) {
 
 	got := err.Error()
 
-	if got != "Failed to get pid csgo.exe" {
-		t.Errorf(got)
+	want := "Failed to get pid csgo.exe"
+
+	if got != want {
+		t.Errorf("%q; want %q", got, want)
 	}
 }
 
 func TestStubProcessNoDLL(t *testing.T) {
-	withEXE("test\\nodll\\csgo.exe", func() {
+	withProcess("test\\nodll\\csgo.exe", func() {
 		_, _, err := Instrument()
 
 		got := err.Error()
 
-		if got != "Failed to get module address client_panorama.dll" {
-			t.Errorf(got)
+		want := "Failed to get offset"
+
+		if got != want {
+			t.Errorf("%q; want %q", got, want)
 		}
 	})
 }
 
 func TestStubProcess(t *testing.T) {
-	withEXE("test\\dll\\csgo.exe", func() {
+	withProcess("test\\dll\\csgo.exe", func() {
 		_, _, err := Instrument()
 
 		got := err.Error()
 
-		if got != "Failed to get OffsetPlayer" {
-			t.Errorf(got)
+		want := "Failed to get OffsetPlayer"
+
+		if got != want {
+			t.Errorf("%q; want %q", got, want)
 		}
 	})
 }

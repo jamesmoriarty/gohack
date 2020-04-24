@@ -15,8 +15,8 @@ const (
 type Offsets struct {
 	Timestamp  string `yaml:"timestamp"`
 	Signatures struct {
-		OffsetPlayer uintptr `yaml:"dwLocalPlayer"`
-		OffsetForceJump   uintptr `yaml:"dwForceJump"`
+		OffsetPlayer    uintptr `yaml:"dwLocalPlayer"`
+		OffsetForceJump uintptr `yaml:"dwForceJump"`
 	} `yaml:"signatures"`
 	Netvars struct {
 		OffsetOffsetPlayerFlags uintptr `yaml:"m_fFlags"`

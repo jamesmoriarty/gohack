@@ -7,8 +7,6 @@ import (
 	"github.com/jamesmoriarty/gomem"
 	log "github.com/sirupsen/logrus"
 	"strconv"
-	"time"
-	"unsafe"
 )
 
 var (
@@ -40,12 +38,7 @@ func ptrToHex(ptr uintptr) string {
 	return h
 }
 
-const (
-	processName = "csgo.exe"
-	moduleName  = "client_panorama.dll"
-)
-
-func Instrument() (*gomem.Process, *gohack.Addresses, error) {
+func Instrument() (*gomem.Process, *gohack.Client, error) {
 	log.SetFormatter(&log.TextFormatter{ForceColors: true})
 
 	offsets, err := gohack.GetOffsets()
@@ -53,50 +46,26 @@ func Instrument() (*gomem.Process, *gohack.Addresses, error) {
 		return nil, nil, errors.New("Failed to get offsets " + err.Error())
 	}
 
-	process, err := gomem.GetFromProcessName(processName)
+	process, err := gomem.GetFromProcessName("csgo.exe")
 	if err != nil {
-		return nil, nil, errors.New("Failed to get pid " + processName)
+		return nil, nil, errors.New("Failed to get pid csgo.exe")
 	}
-	log.WithFields(log.Fields{"pid": process.ID}).Info("GetFromProcessName ", processName)
+	log.WithFields(log.Fields{"pid": process.ID}).Info("GetFromProcessName csgo.exe")
 
-	address, err := process.GetModule(moduleName)
+	client, err := gohack.ClientFrom(process, offsets)
 	if err != nil {
-		return nil, nil, errors.New("Failed to get module address " + moduleName)
+		return nil, nil, err
 	}
-	log.WithFields(log.Fields{"address": address}).Info("GetModule ", moduleName)
 
-	process.Open()
 	log.WithFields(log.Fields{"handle": process.Handle}).Info("OpenProcess ", process.ID)
+	log.WithFields(log.Fields{"value": ptrToHex(client.Offset)}).Info("- Offset")
+	log.WithFields(log.Fields{"value": ptrToHex(client.OffsetForceJump())}).Info("- OffsetForceJump")
+	log.WithFields(log.Fields{"value": ptrToHex(client.OffsetPlayer())}).Info("- OffsetPlayer")
+	log.WithFields(log.Fields{"value": ptrToHex(client.OffsetPlayerFlags())}).Info("- OffsetPlayerFlags")
 
-	addresses := &gohack.Addresses{Process: process, Offset: address, Offsets: offsets}
-	if addresses.OffsetPlayer() == 0 {
-		return process, addresses, errors.New("Failed to get OffsetPlayer")
-	}
-	log.WithFields(log.Fields{"value": ptrToHex(addresses.Offset)}).Info("- Offset")
-	log.WithFields(log.Fields{"value": ptrToHex(addresses.OffsetForceJump())}).Info("- OffsetForceJump")
-	log.WithFields(log.Fields{"value": ptrToHex(addresses.OffsetPlayer())}).Info("- OffsetPlayer")
-	log.WithFields(log.Fields{"value": ptrToHex(addresses.OffsetPlayerFlags())}).Info("- OffsetPlayerFlags")
-
-	return process, addresses, err
+	return process, client, err
 }
 
-func RunBHOP(p *gomem.Process, addresses *gohack.Addresses) {
-	var (
-		readValue     byte
-		readValuePtr  = (*uintptr)(unsafe.Pointer(&readValue))
-		writeValue    = byte(0x6)
-		writeValuePtr = (*uintptr)(unsafe.Pointer(&writeValue))
-	)
-
-	for {
-		if gomem.IsKeyDown(0x20) { // https://docs.microsoft.com/en-gb/windows/win32/inputdev/virtual-key-codes
-			p.Read(addresses.OffsetPlayerFlags(), readValuePtr, unsafe.Sizeof(readValue))
-
-			if (readValue & (1 << 0)) > 0 { // FL_ONGROUND (1<<0) // https://github.com/ValveSoftware/source-sdk-2013/blob/master/mp/src/public/const.h
-				p.Write(addresses.OffsetForceJump(), writeValuePtr, unsafe.Sizeof(writeValue))
-			}
-		}
-
-		time.Sleep(90) // 15ms tick
-	}
+func Execute(p *gomem.Process, c *gohack.Client) {
+	gohack.RunBHOP(p, c)
 }
