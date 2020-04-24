@@ -9,7 +9,7 @@ import (
 func main() {
 	gohack.PrintBanner()
 
-	process, addresses, err := gohack.Instrument()
+	process, client, err := gohack.Instrument()
 
 	if err != nil {
 		log.Fatal(err)
@@ -17,5 +17,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	gohack.RunBHOP(process, addresses)
+	gohack.Execute(process, client)
 }
