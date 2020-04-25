@@ -16,7 +16,7 @@ func ClientFrom(process *gomem.Process, offsets *Offsets) (*Client, error) {
 	offset, err := process.GetModule("client_panorama.dll")
 
 	if err != nil {
-		return nil, errors.New("Failed to get offset")
+		return nil, errors.New("Failed to get module offset")
 	}
 
 	client := &Client{Process: process, Offset: offset, Offsets: offsets}
@@ -24,7 +24,7 @@ func ClientFrom(process *gomem.Process, offsets *Offsets) (*Client, error) {
 	process.Open()
 
 	if client.OffsetPlayer() == 0 {
-		return nil, errors.New("Failed to get OffsetPlayer")
+		return nil, errors.New("Failed to get player offset")
 	}
 
 	return client, nil

@@ -41,7 +41,7 @@ func TestStubProcessNoDLL(t *testing.T) {
 
 		got := err.Error()
 
-		want := "Failed to get offset"
+		want := "Failed to get module offset"
 
 		if got != want {
 			t.Errorf("%q; want %q", got, want)
@@ -55,7 +55,7 @@ func TestStubProcess(t *testing.T) {
 
 		got := err.Error()
 
-		want := "Failed to get OffsetPlayer"
+		want := "Failed to get player offset"
 
 		if got != want {
 			t.Errorf("%q; want %q", got, want)
