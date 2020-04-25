@@ -3,7 +3,7 @@ module github.com/jamesmoriarty/gohack
 go 1.13
 
 require (
-	github.com/jamesmoriarty/gomem v0.0.0-20200421105148-c8fe9f89d7d3
+	github.com/jamesmoriarty/gomem v0.0.0-20200425133940-4729851cb4ba
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/sirupsen/logrus v1.5.0
 	github.com/stretchr/objx v0.1.1 // indirect

@@ -8,6 +8,10 @@ github.com/jamesmoriarty/gomem v0.0.0-20200421071227-d37c08688325 h1:X1zzdOtsLIB
 github.com/jamesmoriarty/gomem v0.0.0-20200421071227-d37c08688325/go.mod h1:PUhkYqg17uDRQs52DoBRalN8LgJ/qPb4gjy4mjSzh5E=
 github.com/jamesmoriarty/gomem v0.0.0-20200421105148-c8fe9f89d7d3 h1:spBqHsG5vvF3preZl5x3UGlGpYAHR1EqhrfJSRDSVbk=
 github.com/jamesmoriarty/gomem v0.0.0-20200421105148-c8fe9f89d7d3/go.mod h1:PUhkYqg17uDRQs52DoBRalN8LgJ/qPb4gjy4mjSzh5E=
+github.com/jamesmoriarty/gomem v0.0.0-20200422123942-8817b7f18867 h1:oyPO08Epf0REeqNSD6RJCu2Ej7zB+cxmld8mmdVCwUM=
+github.com/jamesmoriarty/gomem v0.0.0-20200422123942-8817b7f18867/go.mod h1:PUhkYqg17uDRQs52DoBRalN8LgJ/qPb4gjy4mjSzh5E=
+github.com/jamesmoriarty/gomem v0.0.0-20200425133940-4729851cb4ba h1:YD3n7RKQZq0z8YU1ODyj7OsWlXJ2M+TBoey1Qpaw5ps=
+github.com/jamesmoriarty/gomem v0.0.0-20200425133940-4729851cb4ba/go.mod h1:PUhkYqg17uDRQs52DoBRalN8LgJ/qPb4gjy4mjSzh5E=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1 h1:mweAR1A6xJ3oS2pRaGiHgQ4OO8tzTaLawm8vnODuwDk=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
 github.com/konsorten/go-windows-terminal-sequences v1.0.2 h1:DB17ag19krx9CFsz4o3enTrPXyIXCl+2iCXH/aMAp9s=

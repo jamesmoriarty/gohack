@@ -9,9 +9,9 @@ import (
 func RunBHOP(p *gomem.Process, client *Client) {
 	var (
 		readValue     byte
-		readValuePtr  = (*uintptr)(unsafe.Pointer(&readValue))
+		readValuePtr  = (uintptr)(unsafe.Pointer(&readValue))
 		writeValue    = byte(0x6)
-		writeValuePtr = (*uintptr)(unsafe.Pointer(&writeValue))
+		writeValuePtr = (uintptr)(unsafe.Pointer(&writeValue))
 	)
 
 	for {

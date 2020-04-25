@@ -3,6 +3,7 @@ package gohack
 import (
 	"errors"
 	"github.com/jamesmoriarty/gomem"
+	"unsafe"
 )
 
 type Client struct {
@@ -34,11 +35,14 @@ func (a *Client) OffsetForceJump() uintptr {
 }
 
 func (a *Client) OffsetPlayer() uintptr {
-	var buffer uintptr
+	var (
+		readValue    uintptr
+		readValuePtr = (uintptr)(unsafe.Pointer(&readValue))
+	)
 
-	a.Process.Read(a.Offset+a.Offsets.Signatures.OffsetPlayer, &buffer, 4)
+	a.Process.Read(a.Offset+a.Offsets.Signatures.OffsetPlayer, readValuePtr, 4)
 
-	return buffer
+	return readValue
 }
 
 func (a *Client) OffsetPlayerFlags() uintptr {
