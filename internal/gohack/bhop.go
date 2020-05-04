@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-func RunBHOP(p *gomem.Process, client *Client) {
+func RunBHOP(client *Client) {
 	var (
 		readValue     byte
 		readValuePtr  = (uintptr)(unsafe.Pointer(&readValue))
@@ -16,10 +16,10 @@ func RunBHOP(p *gomem.Process, client *Client) {
 
 	for {
 		if gomem.IsKeyDown(0x20) { // https://docs.microsoft.com/en-gb/windows/win32/inputdev/virtual-key-codes
-			p.Read(client.OffsetPlayerFlags(), readValuePtr, unsafe.Sizeof(readValue))
+			client.Process.Read(client.OffsetPlayerFlags(), readValuePtr, unsafe.Sizeof(readValue))
 
 			if (readValue & (1 << 0)) > 0 { // FL_ONGROUND (1<<0) // https://github.com/ValveSoftware/source-sdk-2013/blob/master/mp/src/public/const.h
-				p.Write(client.OffsetForceJump(), writeValuePtr, unsafe.Sizeof(writeValue))
+				client.Process.Write(client.OffsetForceJump(), writeValuePtr, unsafe.Sizeof(writeValue))
 			}
 		}
 

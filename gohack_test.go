@@ -24,7 +24,7 @@ func withProcess(path string, f func()) {
 }
 
 func TestNoProcess(t *testing.T) {
-	_, _, err := Instrument()
+	_, err := Instrument()
 
 	got := err.Error()
 
@@ -37,7 +37,7 @@ func TestNoProcess(t *testing.T) {
 
 func TestStubProcessNoDLL(t *testing.T) {
 	withProcess("test\\nodll\\csgo.exe", func() {
-		_, _, err := Instrument()
+		_, err := Instrument()
 
 		got := err.Error()
 
@@ -51,7 +51,7 @@ func TestStubProcessNoDLL(t *testing.T) {
 
 func TestStubProcess(t *testing.T) {
 	withProcess("test\\dll\\csgo.exe", func() {
-		_, _, err := Instrument()
+		_, err := Instrument()
 
 		got := err.Error()
 
