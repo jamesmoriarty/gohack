@@ -3,13 +3,20 @@ package main
 import (
 	"github.com/jamesmoriarty/gohack"
 	log "github.com/sirupsen/logrus"
+	"fmt"
 	"os"
 )
 
-func main() {
-	gohack.PrintBanner()
+func PrintBanner() {
+	fmt.Printf(gohack.Banner, gohack.Version, gohack.Date)
 
-	process, client, err := gohack.Instrument()
+	fmt.Println()
+}
+
+func main() {
+	PrintBanner()
+
+	client, err := gohack.Instrument()
 
 	if err != nil {
 		log.Fatal(err)
@@ -17,5 +24,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	gohack.Execute(process, client)
+	gohack.Execute(client)
 }
