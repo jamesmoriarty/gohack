@@ -1,16 +1,26 @@
 package main
 
 import (
+	"fmt"
 	"github.com/jamesmoriarty/gohack"
 	log "github.com/sirupsen/logrus"
-	"fmt"
 	"os"
 )
 
 func PrintBanner() {
-	fmt.Printf(gohack.Banner, gohack.Version, gohack.Date)
+	fmt.Printf(
+		`
+    ___       ___       ___       ___       ___       ___   
+   /\  \     /\  \     /\__\     /\  \     /\  \     /\__\  
+  /::\  \   /::\  \   /:/__/_   /::\  \   /::\  \   /:/ _/_ 
+ /:/\:\__\ /:/\:\__\ /::\/\__\ /::\:\__\ /:/\:\__\ /::-"\__\
+ \:\:\/__/ \:\/:/  / \/\::/  / \/\::/  / \:\ \/__/ \;:;-",-"
+  \::/  /   \::/  /    /:/  /    /:/  /   \:\__\    |:|  |  
+   \/__/     \/__/     \/__/     \/__/     \/__/     \|__| 
+ 
+version: %s-%s
 
-	fmt.Println()
+`, gohack.Version, gohack.Date)
 }
 
 func main() {
