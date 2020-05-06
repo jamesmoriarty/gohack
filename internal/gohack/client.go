@@ -31,7 +31,7 @@ func ClientFrom(process *gomem.Process, offsets *Offsets) (*Client, error) {
 }
 
 func (a *Client) OffsetForceJump() uintptr {
-	return a.Offset + a.Offsets.Signatures.OffsetForceJump
+	return a.Offset + a.Offsets.Signatures.OffsetdwForceJump
 }
 
 func (a *Client) OffsetPlayer() uintptr {
@@ -40,11 +40,11 @@ func (a *Client) OffsetPlayer() uintptr {
 		readValuePtr = (uintptr)(unsafe.Pointer(&readValue))
 	)
 
-	a.Process.Read(a.Offset+a.Offsets.Signatures.OffsetPlayer, readValuePtr, 4)
+	a.Process.Read(a.Offset+a.Offsets.Signatures.OffsetdwLocalPlayer, readValuePtr, 4)
 
 	return readValue
 }
 
 func (a *Client) OffsetPlayerFlags() uintptr {
-	return a.OffsetPlayer() + a.Offsets.Netvars.OffsetOffsetPlayerFlags
+	return a.OffsetPlayer() + a.Offsets.Netvars.Offsetm_fFlags
 }
