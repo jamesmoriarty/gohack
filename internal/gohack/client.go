@@ -13,7 +13,7 @@ type Client struct {
 }
 
 func ClientFrom(process *gomem.Process, offsets *Offsets) (*Client, error) {
-	offset, err := process.GetModule("client_panorama.dll")
+	offset, err := process.GetModule("client.dll")
 
 	if err != nil {
 		return nil, errors.New("Failed to get module offset")
