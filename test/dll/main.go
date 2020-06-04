@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	dll  = syscall.MustLoadDLL("client_panorama.dll")
+	dll  = syscall.MustLoadDLL("client.dll")
 	proc = dll.MustFindProc("Sum")
 )
 

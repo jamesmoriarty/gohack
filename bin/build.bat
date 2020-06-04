@@ -7,9 +7,9 @@ set GOOS=windows
 set CGO_ENABLED=1
 
 cd .\test\dll
-go build -buildmode=c-archive client_panorama.go
-gcc -shared -pthread -o client_panorama.dll client_panorama.a -lWinMM -lntdll -lWS2_32
-gcc client_panorama.def client_panorama.a -shared -lwinmm -lWs2_32 -o client_panorama.dll -Wl,--out-implib,client_panorama.lib
+go build -x -buildmode=c-archive -o client.a client.go
+gcc -shared -pthread -o client.dll client.a -lWinMM -lntdll -lWS2_32
+gcc client.def client.a -shared -lwinmm -lWs2_32 -o client.dll -Wl,--out-implib,client.lib
 go build -v -o csgo.exe main.go
 cd ..\..
 
