@@ -1,0 +1,27 @@
+name: Continuous Integration
+
+on: [ push ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        target:
+          - os: 'windows-latest'
+            goos: 'windows'
+            goarch: 'amd64'
+        go: [ '1.13', '1.14' ]
+
+    runs-on: ${{ matrix.target.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.go }}
+
+      - run: .\bin\build.bat
+        env:
+          GOOS: ${{ matrix.target.goos }}
+          GOARCH: ${{ matrix.target.goarch }}
