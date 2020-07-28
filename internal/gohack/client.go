@@ -8,18 +8,18 @@ import (
 
 type Client struct {
 	Process *gomem.Process
-	Offset  uintptr
+	Address uintptr
 	Offsets *Offsets
 }
 
-func ClientFrom(process *gomem.Process, offsets *Offsets) (*Client, error) {
-	offset, err := process.GetModule("client.dll")
+func GetClientFrom(process *gomem.Process, offsets *Offsets) (*Client, error) {
+	address, err := process.GetModule("client.dll")
 
 	if err != nil {
 		return nil, errors.New("Failed to get module offset")
 	}
 
-	client := &Client{Process: process, Offset: offset, Offsets: offsets}
+	client := &Client{Process: process, Address: address, Offsets: offsets}
 
 	process.Open()
 
@@ -31,7 +31,7 @@ func ClientFrom(process *gomem.Process, offsets *Offsets) (*Client, error) {
 }
 
 func (a *Client) OffsetForceJump() uintptr {
-	return a.Offset + a.Offsets.Signatures.OffsetdwForceJump
+	return a.Address + a.Offsets.Signatures.OffsetdwForceJump
 }
 
 func (a *Client) OffsetPlayer() uintptr {
@@ -40,7 +40,7 @@ func (a *Client) OffsetPlayer() uintptr {
 		readValuePtr = (uintptr)(unsafe.Pointer(&readValue))
 	)
 
-	a.Process.Read(a.Offset+a.Offsets.Signatures.OffsetdwLocalPlayer, readValuePtr, 4)
+	a.Process.Read(a.Address + a.Offsets.Signatures.OffsetdwLocalPlayer, readValuePtr, 4)
 
 	return readValue
 }
