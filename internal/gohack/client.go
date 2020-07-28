@@ -30,21 +30,21 @@ func GetClientFrom(process *gomem.Process, offsets *Offsets) (*Client, error) {
 	return client, nil
 }
 
-func (a *Client) OffsetForceJump() uintptr {
-	return a.Address + a.Offsets.Signatures.OffsetdwForceJump
+func (c *Client) OffsetForceJump() uintptr {
+	return c.Address + c.Offsets.Signatures.dwForceJump
 }
 
-func (a *Client) OffsetPlayer() uintptr {
+func (c *Client) OffsetPlayer() uintptr {
 	var (
 		readValue    uintptr
 		readValuePtr = (uintptr)(unsafe.Pointer(&readValue))
 	)
 
-	a.Process.Read(a.Address + a.Offsets.Signatures.OffsetdwLocalPlayer, readValuePtr, 4)
+	c.Process.Read(c.Address + c.Offsets.Signatures.dwLocalPlayer, readValuePtr, 4)
 
 	return readValue
 }
 
-func (a *Client) OffsetPlayerFlags() uintptr {
-	return a.OffsetPlayer() + a.Offsets.Netvars.Offsetm_fFlags
+func (c *Client) OffsetPlayerFlags() uintptr {
+	return c.OffsetPlayer() + c.Offsets.Netvars.m_fFlags
 }
