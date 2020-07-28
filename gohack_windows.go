@@ -14,7 +14,7 @@ var (
 	Date    string
 )
 
-func ptrToHex(ptr uintptr) string {
+func ToHexString(ptr uintptr) string {
 	s := fmt.Sprintf("%d", ptr)
 	n, _ := strconv.Atoi(s)
 	h := fmt.Sprintf("0x%x", n)
@@ -37,15 +37,15 @@ func Instrument() (*gohack.Client, error) {
 	}
 	log.WithFields(log.Fields{"pid": process.ID}).Info("GetFromProcessName csgo.exe")
 
-	client, err := gohack.ClientFrom(process, offsets)
+	client, err := gohack.GetClientFrom(process, offsets)
 	if err != nil {
 		return nil, err
 	}
 	log.WithFields(log.Fields{"handle": process.Handle}).Info("OpenProcess ", process.ID)
-	log.WithFields(log.Fields{"value": ptrToHex(client.Offset)}).Info("- Offset")
-	log.WithFields(log.Fields{"value": ptrToHex(client.OffsetForceJump())}).Info("- OffsetForceJump")
-	log.WithFields(log.Fields{"value": ptrToHex(client.OffsetPlayer())}).Info("- OffsetPlayer")
-	log.WithFields(log.Fields{"value": ptrToHex(client.OffsetPlayerFlags())}).Info("- OffsetPlayerFlags")
+	log.WithFields(log.Fields{"value": ToHexString(client.Address)}).Info("- Address")
+	log.WithFields(log.Fields{"value": ToHexString(client.OffsetForceJump())}).Info("- OffsetForceJump")
+	log.WithFields(log.Fields{"value": ToHexString(client.OffsetPlayer())}).Info("- OffsetPlayer")
+	log.WithFields(log.Fields{"value": ToHexString(client.OffsetPlayerFlags())}).Info("- OffsetPlayerFlags")
 
 	return client, err
 }

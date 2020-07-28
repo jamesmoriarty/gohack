@@ -2,14 +2,14 @@ go version
 
 set PATH=%PATH%;C:\MinGW\bin
 
-REM bug - issues with golang 64bit dll support.^
+REM bug - issues with mingw 64bit support.^
 set GOARCH=386
 set GOOS=windows
 set CGO_ENABLED=1
 
 REM build .\test\dll\csgo.exe^
 cd .\test\dll
-go build -x -buildmode=c-archive -o client.a client.go
+go build -buildmode=c-archive -o client.a client.go
 gcc -shared -pthread -o client.dll client.a -lWinMM -lntdll -lWS2_32
 gcc client.def client.a -shared -lwinmm -lWs2_32 -o client.dll -Wl,--out-implib,client.lib
 go build -v -o csgo.exe main.go
