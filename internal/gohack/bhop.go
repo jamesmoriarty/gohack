@@ -8,7 +8,7 @@ import (
 
 func RunBHOP(client *Client) {
 	var (
-		readValue     byte
+		readValue     = byte(0x0)
 		readValuePtr  = (uintptr)(unsafe.Pointer(&readValue))
 		writeValue    = byte(0x6)
 		writeValuePtr = (uintptr)(unsafe.Pointer(&writeValue))
@@ -21,8 +21,15 @@ func RunBHOP(client *Client) {
 			if (readValue & (1 << 0)) > 0 { // FL_ONGROUND (1<<0) // https://github.com/ValveSoftware/source-sdk-2013/blob/master/mp/src/public/const.h
 				client.Process.Write(client.OffsetForceJump(), writeValuePtr, unsafe.Sizeof(writeValue))
 			}
+
+			readValue = 0x0
+			client.Process.Read(client.OffsetForceJump(), readValuePtr, unsafe.Sizeof(readValuePtr))
+
+			if readValue == 0x0 {
+				panic("Write Error" + string(readValue) + " != " + string(writeValue))
+			}
 		}
 
-		time.Sleep(90) // 15ms tick
+		time.Sleep(90)
 	}
 }
