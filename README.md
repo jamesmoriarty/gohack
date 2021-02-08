@@ -4,6 +4,11 @@
 
 Experimental CSGO external game exploit.
 
+## Features
+
+- Trigger Bot (hold shift)
+- Bunny Hop (hold space)
+
 ![Screenshot](docs/screenshot.png)
 
 ## Usage

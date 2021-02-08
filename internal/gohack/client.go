@@ -34,6 +34,10 @@ func (a *Client) OffsetForceJump() uintptr {
 	return a.Address + a.Offsets.Signatures.OffsetdwForceJump
 }
 
+func (a *Client) OffsetForceAttack() uintptr {
+	return a.Address + a.Offsets.Signatures.OffsetdwForceAttack
+}
+
 func (a *Client) OffsetPlayer() uintptr {
 	var (
 		readValue    uintptr
@@ -47,4 +51,15 @@ func (a *Client) OffsetPlayer() uintptr {
 
 func (a *Client) OffsetPlayerFlags() uintptr {
 	return a.OffsetPlayer() + a.Offsets.Netvars.Offsetm_fFlags
+}
+
+func (a *Client) OffsetEntityId() uintptr {
+	var (
+		readValue    uintptr
+		readValuePtr = (uintptr)(unsafe.Pointer(&readValue))
+	)
+
+	a.Process.Read(a.OffsetPlayer() + a.Offsets.Netvars.Offsetm_iCrosshairId, readValuePtr, 4)
+
+	return readValue
 }
