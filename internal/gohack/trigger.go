@@ -7,7 +7,6 @@ import (
 	"unsafe"
 )
 
-
 func RunTrigger(client *Client) {
 	var (
 		writeValue    = byte(0x6)
