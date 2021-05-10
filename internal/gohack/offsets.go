@@ -16,9 +16,11 @@ type Offsets struct {
 	Signatures struct {
 		OffsetdwLocalPlayer uintptr `yaml:"dwLocalPlayer"`
 		OffsetdwForceJump   uintptr `yaml:"dwForceJump"`
+		OffsetdwForceAttack uintptr `yaml:"dwForceAttack"`
 	} `yaml:"signatures"`
 	Netvars struct {
 		Offsetm_fFlags uintptr `yaml:"m_fFlags"`
+		Offsetm_iCrosshairId uintptr `yaml:"m_iCrosshairId"`
 	} `yaml:"netvars"`
 }
 

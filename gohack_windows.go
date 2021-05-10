@@ -2,25 +2,15 @@ package gohack
 
 import (
 	"errors"
-	"fmt"
 	"github.com/jamesmoriarty/gohack/internal/gohack"
 	"github.com/jamesmoriarty/gomem"
 	log "github.com/sirupsen/logrus"
-	"strconv"
 )
 
 var (
 	Version string
 	Date    string
 )
-
-func ToHexString(ptr uintptr) string {
-	s := fmt.Sprintf("%d", ptr)
-	n, _ := strconv.Atoi(s)
-	h := fmt.Sprintf("0x%x", n)
-
-	return h
-}
 
 func Instrument() (*gohack.Client, error) {
 	log.SetFormatter(&log.TextFormatter{ForceColors: true})
@@ -42,14 +32,17 @@ func Instrument() (*gohack.Client, error) {
 		return nil, err
 	}
 	log.WithFields(log.Fields{"handle": process.Handle}).Info("OpenProcess ", process.ID)
-	log.WithFields(log.Fields{"value": ToHexString(client.Address)}).Info("- Address")
-	log.WithFields(log.Fields{"value": ToHexString(client.OffsetForceJump())}).Info("- OffsetForceJump")
-	log.WithFields(log.Fields{"value": ToHexString(client.OffsetPlayer())}).Info("- OffsetPlayer")
-	log.WithFields(log.Fields{"value": ToHexString(client.OffsetPlayerFlags())}).Info("- OffsetPlayerFlags")
+	log.WithFields(log.Fields{"value": gohack.ToHexString(client.Address)}).Info("- Address")
+	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetForceJump())}).Info("- OffsetForceJump")
+	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetForceAttack())}).Info("- OffsetForceAttack")
+	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetPlayer())}).Info("- OffsetPlayer")
+	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetPlayerFlags())}).Info("- OffsetPlayerFlags")
+	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetEntityId())}).Info("- OffsetEntityId")
 
 	return client, err
 }
 
 func Execute(c *gohack.Client) {
+	go gohack.RunTrigger(c)
 	gohack.RunBHOP(c)
 }

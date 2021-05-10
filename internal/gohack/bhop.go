@@ -3,6 +3,7 @@ package gohack
 import (
 	"github.com/jamesmoriarty/gomem"
 	"time"
+	"runtime"
 	"unsafe"
 )
 
@@ -22,7 +23,10 @@ func RunBHOP(client *Client) {
 				client.Process.Write(client.OffsetForceJump(), writeValuePtr, unsafe.Sizeof(writeValue))
 			}
 
+			// N.B. writing can silently fails so we need to verify the write. I suspect we might need to re-open the process handle.
+
 			readValue = 0x0
+
 			client.Process.Read(client.OffsetForceJump(), readValuePtr, unsafe.Sizeof(readValuePtr))
 
 			if readValue == 0x0 {
@@ -31,5 +35,9 @@ func RunBHOP(client *Client) {
 		}
 
 		time.Sleep(90)
+
+		// N.B. guard against buffer gc.
+		runtime.KeepAlive(&readValue)
+		runtime.KeepAlive(&writeValue)
 	}
 }
