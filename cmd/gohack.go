@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/jamesmoriarty/gohack"
 	log "github.com/sirupsen/logrus"
-	"os"
 )
 
 func PrintBanner() {

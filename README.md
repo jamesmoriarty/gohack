@@ -2,12 +2,14 @@
 
 [![Latest Tag][6]][5] [![CI][3]][4] [![Go Report][1]][2] ![GitHub Releases][8]
 
-Experimental Go language CSGO exploit proof-of-concept. Automated tests utilizing stubbed external processes.
+Experimental Go language CSGO exploit proof-of-concept.
 
 ## Features
 
-- Trigger Bot (hold shift)
-- Bunny Hop (hold space)
+- Trigger Bot (hold shift).
+- Bunny Hop (hold space).
+- Offsets Autoupdate From [Hazedumper][9].
+- Automated tests utilizing stubbed external processes to avoid needing binary compatability.
 
 ## Screenshots
 
@@ -46,3 +48,4 @@ go install github.com/jamesmoriarty/gohack
 [6]: https://img.shields.io/github/v/tag/jamesmoriarty/gohack.svg?logo=github&label=latest
 [7]: https://github.com/1jz/csgo-go-bhop
 [8]: https://img.shields.io/github/downloads/jamesmoriarty/gohack/total
+[9]: https://github.com/frk1/hazedumper

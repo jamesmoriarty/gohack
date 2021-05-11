@@ -1,10 +1,11 @@
 package gohack
 
 import (
-	"github.com/jamesmoriarty/gomem"
-	"time"
 	"runtime"
+	"time"
 	"unsafe"
+
+	"github.com/jamesmoriarty/gomem"
 )
 
 func RunTrigger(client *Client) {

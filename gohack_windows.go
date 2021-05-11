@@ -2,6 +2,7 @@ package gohack
 
 import (
 	"errors"
+
 	"github.com/jamesmoriarty/gohack/internal/gohack"
 	"github.com/jamesmoriarty/gomem"
 	log "github.com/sirupsen/logrus"

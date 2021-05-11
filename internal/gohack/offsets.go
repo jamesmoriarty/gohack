@@ -2,9 +2,10 @@ package gohack
 
 import (
 	"errors"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"net/http"
+
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -19,7 +20,7 @@ type Offsets struct {
 		OffsetdwForceAttack uintptr `yaml:"dwForceAttack"`
 	} `yaml:"signatures"`
 	Netvars struct {
-		Offsetm_fFlags uintptr `yaml:"m_fFlags"`
+		Offsetm_fFlags       uintptr `yaml:"m_fFlags"`
 		Offsetm_iCrosshairId uintptr `yaml:"m_iCrosshairId"`
 	} `yaml:"netvars"`
 }
