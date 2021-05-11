@@ -38,10 +38,6 @@ go install github.com/jamesmoriarty/gohack
 - Assume you will be banned on VAC secured servers.
 - Credit to [1jz][7] which this was originally based on.
 
-## How
-
-![Screenshot](docs/diagram-1.png)
-
 [1]: https://goreportcard.com/badge/github.com/jamesmoriarty/gohack
 [2]: https://goreportcard.com/report/github.com/jamesmoriarty/gohack
 [3]: https://github.com/jamesmoriarty/gohack/workflows/Continuous%20Integration/badge.svg
