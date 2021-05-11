@@ -2,8 +2,9 @@ package gohack
 
 import (
 	"errors"
-	"github.com/jamesmoriarty/gomem"
 	"unsafe"
+
+	"github.com/jamesmoriarty/gomem"
 )
 
 type Client struct {
@@ -44,7 +45,7 @@ func (a *Client) OffsetPlayer() uintptr {
 		readValuePtr = (uintptr)(unsafe.Pointer(&readValue))
 	)
 
-	a.Process.Read(a.Address + a.Offsets.Signatures.OffsetdwLocalPlayer, readValuePtr, 4)
+	a.Process.Read(a.Address+a.Offsets.Signatures.OffsetdwLocalPlayer, readValuePtr, 4)
 
 	return readValue
 }
@@ -59,7 +60,7 @@ func (a *Client) OffsetEntityId() uintptr {
 		readValuePtr = (uintptr)(unsafe.Pointer(&readValue))
 	)
 
-	a.Process.Read(a.OffsetPlayer() + a.Offsets.Netvars.Offsetm_iCrosshairId, readValuePtr, 4)
+	a.Process.Read(a.OffsetPlayer()+a.Offsets.Netvars.Offsetm_iCrosshairId, readValuePtr, 4)
 
 	return readValue
 }
