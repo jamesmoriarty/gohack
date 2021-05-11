@@ -2,7 +2,7 @@
 
 [![Latest Tag][6]][5] [![CI][3]][4] [![Go Report][1]][2] ![GitHub Releases][8]
 
-Experimental CSGO external game exploit.
+Experimental Go language CSGO exploit proof-of-concept. Automated tests utilizing stubbed external processes.
 
 ## Features
 
