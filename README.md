@@ -8,8 +8,8 @@ Experimental Go language CSGO exploit proof-of-concept.
 
 - Trigger Bot (hold shift).
 - Bunny Hop (hold space).
-- Offsets Autoupdate From [Hazedumper][9].
-- Automated tests utilizing stubbed external processes to avoid needing binary compatability.
+- Offsets autoupdate from [Hazedumper][9].
+- Automated tests use stubbed external processes to avoid needing binary compatability.
 
 ## Screenshots
 
