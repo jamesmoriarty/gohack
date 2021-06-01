@@ -2,7 +2,6 @@ package gohack
 
 import (
 	"errors"
-	"unsafe"
 
 	"github.com/jamesmoriarty/gomem"
 )
@@ -40,14 +39,9 @@ func (a *Client) OffsetForceAttack() uintptr {
 }
 
 func (a *Client) OffsetPlayer() uintptr {
-	var (
-		readValue    uintptr
-		readValuePtr = (uintptr)(unsafe.Pointer(&readValue))
-	)
+	ptr, _ := a.Process.ReadUInt32(a.Address + a.Offsets.Signatures.OffsetdwLocalPlayer)
 
-	a.Process.Read(a.Address+a.Offsets.Signatures.OffsetdwLocalPlayer, readValuePtr, 4)
-
-	return readValue
+	return (uintptr)(ptr)
 }
 
 func (a *Client) OffsetPlayerFlags() uintptr {
@@ -55,12 +49,7 @@ func (a *Client) OffsetPlayerFlags() uintptr {
 }
 
 func (a *Client) OffsetEntityId() uintptr {
-	var (
-		readValue    uintptr
-		readValuePtr = (uintptr)(unsafe.Pointer(&readValue))
-	)
+	ptr, _ := a.Process.ReadUInt32(a.OffsetPlayer() + a.Offsets.Netvars.Offsetm_iCrosshairId)
 
-	a.Process.Read(a.OffsetPlayer()+a.Offsets.Netvars.Offsetm_iCrosshairId, readValuePtr, 4)
-
-	return readValue
+	return (uintptr)(ptr)
 }
