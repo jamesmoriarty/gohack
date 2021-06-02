@@ -21,8 +21,6 @@ func GetClientFrom(process *gomem.Process, offsets *Offsets) (*Client, error) {
 
 	client := &Client{Process: process, Address: address, Offsets: offsets}
 
-	process.Open()
-
 	if client.OffsetPlayer() == 0 {
 		return nil, errors.New("Failed to get player offset")
 	}

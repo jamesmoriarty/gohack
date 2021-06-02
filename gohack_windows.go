@@ -22,7 +22,7 @@ func Instrument() (*gohack.Client, error) {
 	}
 	log.WithFields(log.Fields{"url": gohack.OffsetsURL}).Info("GetOffsets")
 
-	process, err := gomem.GetFromProcessName("csgo.exe")
+	process, err := gomem.GetOpenProcessFromName("csgo.exe")
 	if err != nil {
 		return nil, errors.New("Failed to get pid csgo.exe")
 	}
