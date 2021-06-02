@@ -16,6 +16,8 @@ github.com/jamesmoriarty/gomem v0.0.0-20200612080315-328b703e4751 h1:25QsiEumFG5
 github.com/jamesmoriarty/gomem v0.0.0-20200612080315-328b703e4751/go.mod h1:PUhkYqg17uDRQs52DoBRalN8LgJ/qPb4gjy4mjSzh5E=
 github.com/jamesmoriarty/gomem v0.2.0 h1:2az8r5n98rA6cpmVbLAbEQIJdltrRAkDqyWn7GbCrWs=
 github.com/jamesmoriarty/gomem v0.2.0/go.mod h1:PUhkYqg17uDRQs52DoBRalN8LgJ/qPb4gjy4mjSzh5E=
+github.com/jamesmoriarty/gomem v1.0.0 h1:nDpWzE/XhUCIp9tBW4f5sw2K1aabeCQdedwPH8ZQUms=
+github.com/jamesmoriarty/gomem v1.0.0/go.mod h1:PUhkYqg17uDRQs52DoBRalN8LgJ/qPb4gjy4mjSzh5E=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1 h1:mweAR1A6xJ3oS2pRaGiHgQ4OO8tzTaLawm8vnODuwDk=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
 github.com/konsorten/go-windows-terminal-sequences v1.0.2 h1:DB17ag19krx9CFsz4o3enTrPXyIXCl+2iCXH/aMAp9s=
