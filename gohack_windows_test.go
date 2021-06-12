@@ -4,6 +4,7 @@ import (
 	"os/exec"
 	"strings"
 	"testing"
+	"time"
 )
 
 func withProcess(path string, f func()) {
@@ -19,6 +20,8 @@ func withProcess(path string, f func()) {
 	exe := ss[len(ss)-1]
 
 	defer exec.Command("TASKKILL", "/F", "/IM", exe).Run()
+
+	time.Sleep(1 * time.Second)
 
 	f()
 }

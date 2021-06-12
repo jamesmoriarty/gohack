@@ -1,18 +1,16 @@
 go version
 
-set PATH=%PATH%;C:\MinGW\bin
-
-REM bug - issues with mingw 64bit support.^
+REM configure csgo.exe dist is 386^
 set GOARCH=386
 set GOOS=windows
 set CGO_ENABLED=1
+set PATH=%PATH%;C:\MinGW\bin
 
 REM build .\test\dll\csgo.exe^
 cd .\test\dll
-go build -buildmode=c-archive -o client.a client.go
-gcc -shared -pthread -o client.dll client.a -lWinMM -lntdll -lWS2_32
-gcc client.def client.a -shared -lwinmm -lWs2_32 -o client.dll -Wl,--out-implib,client.lib
-go build -v -o csgo.exe main.go
+gcc -c -o client.o client.c
+gcc -o client.dll -s -shared client.o -Wl,--subsystem,windows
+gcc -o csgo csgo.c -L. -lclient
 cd ..\..
 
 REM build .\test\nodll\csgo.exe^
@@ -30,7 +28,5 @@ go build -v -ldflags "-X github.com/jamesmoriarty/gohack.Version=%VERSION% -X gi
 
 if %errorlevel% neq 0 exit /b %errorlevel%
 
-REM bug - issues with gc + syscalls + including windows golang dll + exe.^
-go test -v -coverprofile cover.out
-
-exit 0
+REM test^
+go test -covermode=atomic -coverprofile='cover.out' -v ./...
