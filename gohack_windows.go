@@ -26,24 +26,25 @@ func Instrument() (*gohack.Client, error) {
 	if err != nil {
 		return nil, errors.New("Failed to get pid csgo.exe")
 	}
-	log.WithFields(log.Fields{"pid": process.ID}).Info("GetFromProcessName csgo.exe")
+	log.WithFields(log.Fields{"pid": process.ID, "handle": process.Handle}).Info("GetOpenProcessFromName csgo.exe")
 
 	client, err := gohack.GetClientFrom(process, offsets)
 	if err != nil {
 		return nil, err
 	}
-	log.WithFields(log.Fields{"handle": process.Handle}).Info("OpenProcess ", process.ID)
-	log.WithFields(log.Fields{"value": gohack.ToHexString(client.Address)}).Info("- Address")
-	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetForceJump())}).Info("- OffsetForceJump")
-	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetForceAttack())}).Info("- OffsetForceAttack")
-	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetPlayer())}).Info("- OffsetPlayer")
-	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetPlayerFlags())}).Info("- OffsetPlayerFlags")
-	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetEntityId())}).Info("- OffsetEntityId")
+	log.WithFields(log.Fields{"value": gohack.ToHexString(client.Address)}).Info("[+] Address")
+	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetForceJump())}).Info("[+] OffsetForceJump")
+	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetForceAttack())}).Info("[+] OffsetForceAttack")
+	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetPlayer())}).Info("[+] OffsetPlayer")
+	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetPlayerFlags())}).Info("[+] OffsetPlayerFlags")
+	log.WithFields(log.Fields{"value": gohack.ToHexString(client.OffsetEntityId())}).Info("[+] OffsetEntityId")
 
 	return client, err
 }
 
 func Execute(c *gohack.Client) {
 	go gohack.RunTrigger(c)
-	gohack.RunBHOP(c)
+	go gohack.RunHop(c)
+
+	select{ }
 }
