@@ -17,7 +17,7 @@ func RunHop(client *Client) {
 		if gomem.IsKeyDown(VK_SPACE) {
 			flags, _ := client.Process.ReadByte(client.OffsetPlayerFlags())
 
-			if (flags & CSGO_FL_ONGROUND) > 0 { // FL_ONGROUND (1<<0) // https://github.com/ValveSoftware/source-sdk-2013/blob/master/mp/src/public/const.h
+			if (flags & CSGO_FL_ONGROUND) > 0 {
 				client.Process.WriteByte(client.OffsetForceJump(), CSGO_FORCEJUMP)
 			}
 		}
