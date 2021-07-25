@@ -11,6 +11,11 @@ Experimental Go language CSGO exploit proof-of-concept. Inspired [github.com/jam
 - Offsets autoupdate from [Hazedumper][9].
 - Automated tests use stubbed external processes to avoid needing binary compatability.
 
+## Slides
+
+[Talk - Writing My First Exploit](https://speakerdeck.com/jamesmoriarty/talk-writing-my-first-exploit)
+
+
 ## Screenshots
 
 ![Screenshot](docs/screenshot.png)
