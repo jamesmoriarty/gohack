@@ -1,6 +1,6 @@
 # Gohack 
 
-[![Latest Tag][6]][5] [![CI][3]][4] [![Go Report][1]][2] ![GitHub Releases][8]
+[![CI][3]][4] [![Latest Tag][6]][5] [![Go Report][1]][2] ![GitHub Releases][8]
 
 Experimental Go language CSGO exploit proof-of-concept. Inspired [github.com/jamesmoriarty/gomem](https://github.com/jamesmoriarty/gomem).
 
