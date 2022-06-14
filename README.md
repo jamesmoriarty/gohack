@@ -2,7 +2,7 @@
 
 [![CI][3]][4] [![Latest Tag][6]][5] [![Go Report][1]][2] ![GitHub Releases][8]
 
-Experimental Go language CSGO exploit proof-of-concept. Automated tests use stubbed external processes to avoid needing binary compatability. Inspired [github.com/jamesmoriarty/gomem](https://github.com/jamesmoriarty/gomem).
+Experimental Go language proof-of-concept CSGO exploit. Automated tests use stubbed external processes to avoid needing binary compatability. Inspired [github.com/jamesmoriarty/gomem](https://github.com/jamesmoriarty/gomem).
 
 ## Features
 
